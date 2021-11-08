@@ -1,5 +1,5 @@
 # SBWBayes
-**new_post.R** contains the code that runs the TMB model, which is written in regniere_structured.cpp
+**new_post.R** contains the code that runs the stage-structured TMB model, which is written in regniere_structured.cpp, and the model without the stage structure, which is written in regniere_JIP2015.cpp
 
 **new_sims.R** contains the code that runs weather data simulations, and creates the figures in the main text.
 
