@@ -138,4 +138,51 @@ get_curves <- function(data, temp = tempvec, spline = FALSE) {
   return(df2)
 }
 
+get_curves_opt <- function(data, temp = tempvec, spline = FALSE) {
+  lst <- lapply(1:nrow(data), function(r) {
+    row <- data[r,]
+    ta <- with(row, ta.fun(HL, HH, TL, TH))
+    if (spline) {
+      temps <- seq(5, 35, by = 5)
+      times <- with(row, calc_pred3(temps, rho25, HA, TL, HL, TH, HH, ta))
+      ups <- unlist(row[,grep('upsilon.', names(row))])
+      sigma <- row$s_upsilon
+      u.ups <- pnorm(ups, 0, 1)
+      c.ups <- qcauchy(u.ups, 1, sigma)
+      times <- times*c.ups
+      rates <- 1/times
+      if (length(temp) != length(temps)) {
+        i.spline <- interpSpline(temps, rates)
+        df <- as.data.frame(predict(i.spline, temp))
+        names(df) <- c('temp', 'rate')
+        df$rate <- pmax(df$rate, 0)
+        df$time <- 1/df$rate
+      }
+      else {df <- data.frame('temp' = temps,
+                             'rate' = pmax(rates, 0),
+                             'time' = 1/pmax(rates, 0))}
+    }
+    else {
+      times <- with(row, calc_pred3(temp, rho25, HA, TL, HL, TH, HH, ta))
+      rates <- 1/times
+      w <- which.max(rates)
+      df <- data.frame('temp' = temp, 'rate' = rates, 'time' = times,
+                       'r.opt' = rates[w], 't.opt' = temp[w])
+    }
+    df$index <- r
+    return(df)
+  })
+  df2 <- bind_rows(lst)
+  return(df2)
+}
+
+prov.factor <- function(data, name = 'province') {
+  data[,name] <- factor(data[,name], 
+                        levels = c('IN', 'AB', 'QC', 'ON', 'NB2', 'IPU'),
+                        labels = c('Northwest Territories', 'Alberta',
+                                   'Quebec', 'Ontario', 'New Brunswick', 'Lab-Reared'))
+  return(data)
+}
+
+
 

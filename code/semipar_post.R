@@ -13,7 +13,7 @@ nList <- lme4:::namedList
 load("code/regniere_JIP2015_basic.RData")
 nList <- lme4:::namedList
 
-basename <- "regniere_structured_parametric"
+basename <- "regniere_structured"
 basename_loc <- paste0('code/', basename)
 cc <- compile(paste0(basename_loc, '.cpp'))
 try(dyn.unload(dynlib(basename_loc)),silent=TRUE)
@@ -32,7 +32,9 @@ prior.samp <- function(chains) {
       'TH' = rnorm(5, 304, 2),
       'HH' = rgamma(5, 10, scale = 3),
       's_eps' = exp(rnorm(5, -1.5, 0.1)),
+      's_upsilon' = exp(rnorm(5, -2.5, 0.05)),
       's_alpha' = exp(rnorm(1, -1.5, 0.3)),
+      'upsilon' = 0,
       'alpha' = 0.05
     )
     return(lst)
@@ -51,6 +53,7 @@ parms <- list(
   'TH' = rep(306.47530, 5),
   'TA' = rep(298, 5),
   's_eps' = rep(0.3, 5),
+  's_upsilon' = rep(0.1, 5),
   's_alpha' = 0.22)
 parms1 <- parms
 diagnostics <- list()
@@ -77,13 +80,15 @@ parms$alpha <- rep(0, nstage)
 pnames <- c(#"rho25",
   "phi_rho", "psi_rho", "y0_rho",
   "HA","TL","HL","TH","HH","TA",
-  "s_eps", "s_alpha",'alpha')
+  "s_eps","s_upsilon", "s_alpha",
+  "upsilon", 'alpha')
 ff <- MakeADFun(data=dd2,
                 parameters=as.list(parms[pnames]),
                 DLL=basename,
-                random=c('alpha'),
+                random=c("upsilon", 'alpha'),
                 silent=TRUE)
 parm.lst <- lapply(parm.lst, function(x) {
+  x$upsilon <- rep(0, nblock)
   x$alpha <- rep(0.05, nstage)
   dat <- subset(dd, temp1 == 25 & stagename == 'L4')
   x$y0_rho <- weighted.mean(dat$r.est1, dat$nobs)
@@ -128,12 +133,12 @@ p.lst <- lapply(1:5, function(ind) {
   rho25 <- rho*alpha.mult 
   q.pars <- post.df[,1:3]
   
-  par.cols <- post.df[, grep(paste0('[', ind, ']'), names(post.df))[1:6]]
+  par.cols <- post.df[, grep(paste0('[', ind, ']'), names(post.df))[1:7]]
   pars <- as.data.frame(cbind(q.pars,
                               rho25, 
                               par.cols))
   names(pars) <- c('phi_rho', 'psi_rho', 'y0_rho', 'rho25', 
-                   'HA', 'TL', 'HL', 'TH', 'HH', 's_eps')
+                   'HA', 'TL', 'HL', 'TH', 'HH', 's_eps', 's_upsilon')
   pars$HL <- -pars$HL
   pars$TA <- sapply(1:nrow(pars), function(r) {
     row <- pars[r,]
@@ -144,14 +149,18 @@ p.lst <- lapply(1:5, function(ind) {
   stg.df <- subset(dd2.df, stage == ind - 1)
   stg.df <- stg.df[order(stg.df$temp1),]
   blocks <- unique(stg.df$block) + 1
+  ups <- post.df[, paste0('upsilon[', blocks, ']')]
   
   temps <- sort(unique(dd2$temp1))
   
-  stage.df <- as.data.frame(cbind(pars, 'alpha' = alpha.mult, 
+  names(ups) <- paste0('upsilon[', temps, ']')
+  
+  stage.df <- as.data.frame(cbind(pars, ups, 'alpha' = alpha.mult, 
                                   's_alpha' = post.df$s_alpha))
   stage.df$stage <- stages[ind]
   return(stage.df)
 })
 p.df <- bind_rows(p.lst)
 
-write.csv(p.df, 'data/model_results.csv', row.names = FALSE)
+write.csv(p.df, paste0('code/output/simulations/re_structured_', p, '_NEW.csv'),
+          row.names = FALSE)

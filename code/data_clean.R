@@ -1,3 +1,5 @@
+library(tidyverse)
+
 ## Get data from kstudens/SBWPhenoData on github
 sbw2 <- SBWPhenoData::DevTimeSBWv2
 stages <- c('L2', 'L3', 'L4', 'L5', 'L6')
@@ -5,11 +7,14 @@ provs <- unique(sapply(names(sbw2), function(x) {strsplit(x, split = '_')[[1]][1
 
 ## Conform data to correct input format
 all.days <- lapply(1:length(sbw2), function(x) {
+  print(x)
   dat <- sbw2[[x]]
   index <- strsplit(names(sbw2)[[x]], split = '_')[[1]]
   prov <- index[1]
   temp <- as.numeric(index[2])
   gen <- index[3]
+  cups <- 1:nrow(dat)
+  sex <- dat$Sex
   obs <- dat[,2:(ncol(dat)-1)]
   l <- as.list(obs)
   if (length(l) < 10) {
@@ -34,6 +39,8 @@ all.days <- lapply(1:length(sbw2), function(x) {
   df$province <- prov
   df$generation <- gen
   df$block <- x
+  df$cup <- rep(cups, length(unique(df$stage)))
+  df$sex <- rep(sex, length(unique(df$stage)))
   return(df)
 })
 all.days.df <- bind_rows(all.days)
@@ -43,10 +50,41 @@ all.days.df$time2 <- sapply(all.days.df$time2, function(y) {
   }
   return(y)
 })
+
+all.days.df <- all.days.df %>% 
+  mutate(block = paste(generation, province, temp1, stage, sep = "_"))
+
+all.days.df$block <- as.numeric(factor(all.days.df$block))
+
+(all.days.df <- all.days.df 
+  %>% mutate(time2d = pmax(0, time2 - 1)))
+
+## Manage data in which development at lethal temps finishes early
+early <- which(all.days.df$time2 == 0)
+early.sub <- all.days.df[early,]
+early.sub$time2 <- early.sub$time1
+early.sub$time1 <- 0
+early.sub$time2d <- pmax(early.sub$time2 - 1, 0)
+early.sub$temp2 <- early.sub$temp1
+early.sub$transfer <- FALSE
+
+all.days.df[early,] <- early.sub
+
+all.days.df <- subset(all.days.df,
+                      (province == 'IPU' & generation == 'F0') |
+                        (province != 'IPU' & generation == 'F1'))
+
+## Implement double interval censoring for stages > L2
+all.days.df$time2.orig <- all.days.df$time2
+all.days.df$time2 <- all.days.df$time2.orig + 
+  sapply(all.days.df$stage, function(x) {ifelse(x == 'L2', 0, 1)})
+
+write.csv(all.days.df, 'data/all_days_df_ind.csv')
+all.days.df <- subset(all.days.df, select = -cup)
+
 (all.days.df <- all.days.df
   %>% group_by(across())
-  %>% count(name = 'nobs') 
-  %>% mutate(time2d = pmax(0, time2 - 1)))
+  %>% count(name = 'nobs'))
 
 ## Estimated dev times at 20 degrees C
 r20 <- lapply(provs, function(p) {
@@ -69,31 +107,6 @@ r20 <- lapply(provs, function(p) {
 names(r20) <- provs
 
 ##########
-
-all.days.df <- all.days.df %>% 
-  mutate(block = paste(generation, province, temp1, stage, sep = "_"))
-
-all.days.df$block <- as.numeric(factor(all.days.df$block))
-
-## Manage data in which development at lethal temps finishes early
-early <- which(all.days.df$time2 == 0)
-early.sub <- all.days.df[early,]
-early.sub$time2 <- early.sub$time1
-early.sub$time1 <- 0
-early.sub$time2d <- pmax(early.sub$time2 - 1, 0)
-early.sub$temp2 <- early.sub$temp1
-early.sub$transfer <- FALSE
-
-all.days.df[early,] <- early.sub
-
-all.days.df <- subset(all.days.df,
-                      (province == 'IPU' & generation == 'F0') |
-                        (province != 'IPU' & generation == 'F1'))
-
-## Implement double interval censoring for stages > L2
-all.days.df$time2.orig <- all.days.df$time2
-all.days.df$time2 <- all.days.df$time2.orig + 
-  sapply(all.days.df$stage, function(x) {ifelse(x == 'L2', 0, 1)})
 
 ## Impute observed development rates
 all.days.df$r.est2 <- sapply(1:nrow(all.days.df), function(r) {
