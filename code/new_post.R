@@ -93,7 +93,7 @@ parm.lst <- lapply(parm.lst, function(x) {
   return(x)
 })
 stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                 chains = chains, iter = 5000, warmup = 1500,
+                 chains = chains, iter = 5000, warmup = 2000,
                  control = list(max_treedepth = 15, adapt_delta = 0.999))
 
 stan.array <- as.array(stan1)

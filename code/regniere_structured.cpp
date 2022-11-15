@@ -111,6 +111,7 @@ Type objective_function<Type>::operator() ()
   Type epsm1_std;
   Type epsij_std;
   Type u_upsilon;
+  Type lc_upsilon;
   Type c_upsilon;
   
   Type sa2 = -0.5*s_alpha*s_alpha;
@@ -131,7 +132,9 @@ Type objective_function<Type>::operator() ()
     
     // Quantile match Cauchy
     u_upsilon = pnorm(upsilon(block(i)), Type(0), Type(1));
-    c_upsilon = qcauchy(u_upsilon, Type(1), s_upsilon(stage(i)));
+    lc_upsilon = qnorm(u_upsilon, Type(0), Type(s_upsilon));
+    //c_upsilon = qcauchy(u_upsilon, Type(0), s_upsilon(stage(i)));
+    c_upsilon = exp(lc_upsilon);
     
     // Transform for bias reduction
     tpred1 *= c_upsilon;
@@ -163,22 +166,38 @@ Type objective_function<Type>::operator() ()
   
   // Subtract prior probabilities
   if (use_prior == 1) {
+    // jnll -= sum(dnorm(upsilon, Type(0), Type(1), 1));
+    // jnll -= sum(dnorm(alpha, Type(0), Type(1), 1));
+    // 
+    // jnll -= dbeta(phi_rho, Type(4), Type(4), 1);
+    // jnll -= dbeta(psi_rho, Type(4), Type(4), 1);
+    // jnll -= dgamma(y0_rho, Type(5), Type(0.05), 1);
+    // jnll -= dnorm(log(s_alpha), Type(-1.5), Type(0.3), 1);
+    // 
+    // jnll -= sum(dgamma(HL, Type(6), Type(2), 1));
+    // jnll -= sum(dgamma(HA, Type(5), Type(0.2), 1));
+    // jnll -= sum(dgamma(HH, Type(10), Type(3), 1));
+    // jnll -= sum(dnorm(TL, Type(284), Type(2), 1));
+    // jnll -= sum(dnorm(TH, Type(304), Type(2), 1));
+    // 
+    // jnll -= sum(dnorm(log(s_eps), Type(-1.5), Type(0.1), 1));
+    // jnll -= sum(dnorm(log(s_upsilon), Type(-2.5), Type(0.05), 1));
     jnll -= sum(dnorm(upsilon, Type(0), Type(1), 1));
     jnll -= sum(dnorm(alpha, Type(0), Type(1), 1));
     
     jnll -= dbeta(phi_rho, Type(4), Type(4), 1);
     jnll -= dbeta(psi_rho, Type(4), Type(4), 1);
-    jnll -= dgamma(y0_rho, Type(10), Type(0.1), 1);
+    jnll -= dgamma(y0_rho, Type(8.3), Type(0.046), 1);
     jnll -= dnorm(log(s_alpha), Type(-1.5), Type(0.3), 1);
     
-    jnll -= sum(dgamma(HL, Type(6), Type(2), 1));
-    jnll -= sum(dgamma(HA, Type(5), Type(0.2), 1));
-    jnll -= sum(dgamma(HH, Type(10), Type(3), 1));
-    jnll -= sum(dnorm(TL, Type(284), Type(2), 1));
-    jnll -= sum(dnorm(TH, Type(304), Type(2), 1));
+    jnll -= sum(dgamma(HL, Type(3.6), Type(2.253), 1));
+    jnll -= sum(dgamma(HA, Type(5.4), Type(0.134), 1));
+    jnll -= sum(dgamma(HH, Type(7.6), Type(3.12), 1));
+    jnll -= sum(dnorm(TL, Type(281), Type(1.9), 1));
+    jnll -= sum(dnorm(TH, Type(306.3), Type(1.4), 1));
     
-    jnll -= sum(dnorm(log(s_eps), Type(-1.3), Type(0.1), 1));
-    jnll -= sum(dnorm(log(s_upsilon), Type(-2.5), Type(0.05), 1));
+    jnll -= sum(dnorm(log(s_eps), Type(-1.5), Type(0.1), 1));
+    jnll -= sum(dnorm(log(s_upsilon), Type(-0.5), Type(0.5), 1));
   }
   
   return jnll;
