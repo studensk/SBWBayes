@@ -111,7 +111,7 @@ Type objective_function<Type>::operator() ()
   Type epsm1_std;
   Type epsij_std;
   Type u_upsilon;
-  Type lc_upsilon;
+  //Type lc_upsilon;
   Type c_upsilon;
   
   Type sa2 = -0.5*s_alpha*s_alpha;
@@ -132,9 +132,9 @@ Type objective_function<Type>::operator() ()
     
     // Quantile match Cauchy
     u_upsilon = pnorm(upsilon(block(i)), Type(0), Type(1));
-    lc_upsilon = qnorm(u_upsilon, Type(0), Type(s_upsilon));
-    //c_upsilon = qcauchy(u_upsilon, Type(0), s_upsilon(stage(i)));
-    c_upsilon = exp(lc_upsilon);
+    //lc_upsilon = qnorm(u_upsilon, Type(0), Type(s_upsilon));
+    c_upsilon = qcauchy(u_upsilon, Type(1), s_upsilon(stage(i)));
+    //c_upsilon = exp(lc_upsilon);
     
     // Transform for bias reduction
     tpred1 *= c_upsilon;
@@ -181,7 +181,7 @@ Type objective_function<Type>::operator() ()
     // jnll -= sum(dnorm(TH, Type(304), Type(2), 1));
     // 
     // jnll -= sum(dnorm(log(s_eps), Type(-1.5), Type(0.1), 1));
-    // jnll -= sum(dnorm(log(s_upsilon), Type(-2.5), Type(0.05), 1));
+     jnll -= sum(dnorm(log(s_upsilon), Type(-2.5), Type(0.05), 1));
     jnll -= sum(dnorm(upsilon, Type(0), Type(1), 1));
     jnll -= sum(dnorm(alpha, Type(0), Type(1), 1));
     
@@ -197,7 +197,7 @@ Type objective_function<Type>::operator() ()
     jnll -= sum(dnorm(TH, Type(306.3), Type(1.4), 1));
     
     jnll -= sum(dnorm(log(s_eps), Type(-1.5), Type(0.1), 1));
-    jnll -= sum(dnorm(log(s_upsilon), Type(-0.5), Type(0.5), 1));
+    //jnll -= sum(dnorm(log(s_upsilon), Type(-0.5), Type(0.5), 1));
   }
   
   return jnll;

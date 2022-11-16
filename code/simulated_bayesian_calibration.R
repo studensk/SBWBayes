@@ -95,8 +95,13 @@ parm.lst <- lapply(parm.lst, function(x) {
   return(x)
 })
 stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                 chains = chains, iter = 3000, warmup = 1500,
+                 chains = chains, iter = 2000, warmup = 1000,
                  control = list(max_treedepth = 15, adapt_delta = 0.999))
+
+stan.array <- as.array(stan1)
+Rhat <- max(apply(stan.array, 3, Rhat))
+ESS.bulk <- min(apply(stan.array, 3, ess_bulk))
+ESS.tail <- min(apply(stan.array, 3, ess_tail))
 
 g <- get_sampler_params(stan1, inc_warmup = FALSE)
 g.df <- do.call('rbind', g)
