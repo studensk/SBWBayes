@@ -96,7 +96,7 @@ parm.lst <- lapply(parm.lst, function(x) {
 })
 stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
                  chains = chains, iter = 2000, warmup = 1000,
-                 control = list(max_treedepth = 15, adapt_delta = 0.999))
+                 control = list(max_treedepth = 15, adapt_delta = 0.9))
 
 stan.array <- as.array(stan1)
 Rhat <- max(apply(stan.array, 3, Rhat))

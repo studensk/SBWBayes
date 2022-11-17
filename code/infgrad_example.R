@@ -22,7 +22,11 @@ priors.df$stage <- rep(stages, length(priors.lst))
 
 all.data <- bind_rows(lapply(data.lst, function(x) {x[[2]]}))
 names(all.data) <- c('temp1', 'temp2', 'stage', 'time1', 'time2', 'nobs', 'prior.samp')
-all.data$block <- all.data$temp1/5
+#all.data$block <- all.data$temp1/5
+all.data$block <- paste(all.data$stage, all.data$temp1, sep = '_')
+lev.ord <- paste(rep(stages, each = 7), rep(seq(5, 35, by = 5), 5), sep = '_')
+all.data$block <- factor(all.data$block)
+all.data$block <- factor(all.data$block, levels = lev.ord)
 all.data$time2d <- pmax(0, all.data$time2 - 1)
 
 ## Remove "skippers"
@@ -52,9 +56,9 @@ parms <- list(
   'phi_rho' = 0.5,
   'psi_rho' = 0.5,
   'y0_rho' = 0.5,
-  'HL' = rep(8.4, 5),
-  'HH' = rep(9.3, 5),
-  'HA' = rep(1.4, 5), 
+  'HL' = 8.4,
+  'HH' = 9.3,
+  'HA' = 1.4, 
   'TL' = rep(285.90432, 5),
   'TH' = rep(306.47530, 5),
   'TA' = rep(298, 5),
@@ -102,7 +106,7 @@ for (i in 1:length(data.lst)) {
                   silent=TRUE)
   ##### Evaluate Gradient #####
   stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                   chains = 0, iter = 1500, warmup = 500)
+                   chains = 0, iter = 2000, warmup = 1000)
   ps <- priors.lst[[i]]
   ps <- ps[1:(length(ps)-1)]
   
