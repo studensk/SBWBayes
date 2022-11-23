@@ -88,9 +88,9 @@ Type objective_function<Type>::operator() ()
   PARAMETER(psi_rho);
   PARAMETER(y0_rho);
   PARAMETER(HA);
-  PARAMETER_VECTOR(TL);
+  PARAMETER(TL);
   PARAMETER(HL);
-  PARAMETER_VECTOR(TH);
+  PARAMETER(TH);
   PARAMETER(HH);
   PARAMETER_VECTOR(s_eps);
   PARAMETER_VECTOR(s_upsilon);
@@ -124,11 +124,11 @@ Type objective_function<Type>::operator() ()
     rho25 = quadratic(stage(i), phi_rho, psi_rho, y0_rho);
     rho25 *= exp(alpha(stage(i))*s_alpha + sa2);
     
-    TA = calc_TA(-HL, HH, TL(stage(i)), TH(stage(i)));
+    TA = calc_TA(-HL, HH, TL, TH);
     
     // Calculate dev times for both sustainable and lethal temps
-    tpred1 = calc_pred(temp1(i), rho25, HA, TL(stage(i)), -HL, TH(stage(i)), HH, TA);
-    tpred2 = calc_pred(temp2(i), rho25, HA, TL(stage(i)), -HL, TH(stage(i)), HH, TA);
+    tpred1 = calc_pred(temp1(i), rho25, HA, TL, -HL, TH, HH, TA);
+    tpred2 = calc_pred(temp2(i), rho25, HA, TL, -HL, TH, HH, TA);
     
     // Quantile match Lognormal (previously Cauchy)
     u_upsilon = pnorm(upsilon(block(i)), Type(0), Type(1));
@@ -139,6 +139,7 @@ Type objective_function<Type>::operator() ()
     // Transform for bias reduction
     tpred1 *= c_upsilon;
     tpred2 *= c_upsilon;
+    
     
     // Calculate and standardize observed values of epsilon
     epsm1 = log(time1(i)/tpred1 + time2d(i)/tpred2);
@@ -193,8 +194,9 @@ Type objective_function<Type>::operator() ()
     jnll -= dgamma(HL, Type(3.6), Type(2.253), 1);
     jnll -= dgamma(HA, Type(5.4), Type(0.134), 1);
     jnll -= dgamma(HH, Type(7.6), Type(3.12), 1);
-    jnll -= sum(dnorm(TL, Type(281), Type(1.9), 1));
-    jnll -= sum(dnorm(TH, Type(306.3), Type(1.4), 1));
+    jnll -= dnorm(log(TL), Type(5.64), Type(0.0067), 1);
+    //jnll -= dnorm(TH, Type(306.3), Type(1.4), 1);
+    jnll -= dgamma(TH - TL, Type(112), Type(0.226), 1);
     
     jnll -= sum(dnorm(log(s_eps), Type(-1.5), Type(0.1), 1));
     jnll -= sum(dnorm(log(s_upsilon), Type(-0.5), Type(0.5), 1));

@@ -2,7 +2,8 @@ library(DPQ)
 
 ## Test stan code for stage-structured model
 stan.test.structured <- function(data, params) {
-  s <- data$stage + 1
+  #s <- data$stage + 1
+  s <- 1
   params$alpha <- rep(0.05, length(unique(data$stage)))
   params$upsilon <- rep(0, length(unique(data$block)))
   
@@ -19,15 +20,16 @@ stan.test.structured <- function(data, params) {
                                     HL[s], TH[s], HH[s], TA[s]))
   
   upsilon <- params$upsilon[data$block]
-  # u.upsilon <- pnorm(upsilon, 0, 1)
+  u.upsilon <- pnorm(upsilon, 0, 1)
   # c.upsilon <- qcauchy(u.upsilon, 1, params$s_upsilon)
-  c.upsilon <- exp(upsilon)
+  lc.upsilon <- qlnorm(u.upsilon, 0, params$s_upsilon)
+  c.upsilon <- exp(lc.upsilon)
   
   tpred1 <- tpred1*c.upsilon
   tpred2 <- tpred2*c.upsilon
 
-  tpred1 <- pmin(tpred1, 30)
-  tpred2 <- pmin(tpred2, 30)
+  # tpred1 <- pmin(tpred1, 30)
+  # tpred2 <- pmin(tpred2, 30)
   
   epsm1 <- log(data$time1/tpred1 + data$time2d/tpred2)
   epsij <- log(data$time1/tpred1 + data$time2/tpred2)

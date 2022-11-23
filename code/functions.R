@@ -1,4 +1,5 @@
 library(dclone)
+library(splines)
 count <- dplyr::count
 
 ## Functions for imputing observed dev rates at lethal temps
@@ -112,7 +113,7 @@ get_curves <- function(data, temp = tempvec, spline = FALSE) {
       ups <- unlist(row[,grep('upsilon.', names(row))])
       sigma <- row$s_upsilon
       u.ups <- pnorm(ups, 0, 1)
-      c.ups <- qcauchy(u.ups, 1, sigma)
+      c.ups <- qlnorm(u.ups, 0, sigma)
       times <- times*c.ups
       rates <- 1/times
       if (length(temp) != length(temps)) {

@@ -1,0 +1,662 @@
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 0.000705 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.05 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 1: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 1: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 1: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 1: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 1: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 1: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 1: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 1: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 1: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 1: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 1: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 771.144 seconds (Warm-up)
+Chain 1:                227.106 seconds (Sampling)
+Chain 1:                998.25 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 0.000659 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 6.59 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 2: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 2: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 2: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 2: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 2: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 2: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 2: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 2: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 2: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 2: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 2: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 489.367 seconds (Warm-up)
+Chain 2:                248.536 seconds (Sampling)
+Chain 2:                737.903 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 0.000683 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 6.83 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 3: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 3: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 3: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 3: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 3: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 3: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 3: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 3: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 3: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 3: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 3: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 708.058 seconds (Warm-up)
+Chain 3:                240.507 seconds (Sampling)
+Chain 3:                948.564 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 0.000651 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 6.51 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 4: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 4: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 4: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 4: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 4: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 4: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 4: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 4: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 4: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 4: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 4: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 791.947 seconds (Warm-up)
+Chain 4:                223.271 seconds (Sampling)
+Chain 4:                1015.22 seconds (Total)
+Chain 4: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 5).
+Chain 5: 
+Chain 5: Gradient evaluation took 0.000693 seconds
+Chain 5: 1000 transitions using 10 leapfrog steps per transition would take 6.93 seconds.
+Chain 5: Adjust your expectations accordingly!
+Chain 5: 
+Chain 5: 
+Chain 5: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 5: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 5: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 5: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 5: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 5: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 5: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 5: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 5: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 5: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 5: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 5: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 5: 
+Chain 5:  Elapsed Time: 727.18 seconds (Warm-up)
+Chain 5:                236.528 seconds (Sampling)
+Chain 5:                963.707 seconds (Total)
+Chain 5: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 6).
+Chain 6: 
+Chain 6: Gradient evaluation took 0.000679 seconds
+Chain 6: 1000 transitions using 10 leapfrog steps per transition would take 6.79 seconds.
+Chain 6: Adjust your expectations accordingly!
+Chain 6: 
+Chain 6: 
+Chain 6: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 6: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 6: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 6: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 6: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 6: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 6: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 6: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 6: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 6: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 6: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 6: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 6: 
+Chain 6:  Elapsed Time: 637.6 seconds (Warm-up)
+Chain 6:                238.457 seconds (Sampling)
+Chain 6:                876.057 seconds (Total)
+Chain 6: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 7).
+Chain 7: 
+Chain 7: Gradient evaluation took 0.000675 seconds
+Chain 7: 1000 transitions using 10 leapfrog steps per transition would take 6.75 seconds.
+Chain 7: Adjust your expectations accordingly!
+Chain 7: 
+Chain 7: 
+Chain 7: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 7: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 7: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 7: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 7: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 7: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 7: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 7: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 7: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 7: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 7: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 7: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 7: 
+Chain 7:  Elapsed Time: 800.471 seconds (Warm-up)
+Chain 7:                225.403 seconds (Sampling)
+Chain 7:                1025.87 seconds (Total)
+Chain 7: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 8).
+Chain 8: 
+Chain 8: Gradient evaluation took 0.000696 seconds
+Chain 8: 1000 transitions using 10 leapfrog steps per transition would take 6.96 seconds.
+Chain 8: Adjust your expectations accordingly!
+Chain 8: 
+Chain 8: 
+Chain 8: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 8: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 8: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 8: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 8: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 8: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 8: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 8: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 8: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 8: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 8: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 8: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 8: 
+Chain 8:  Elapsed Time: 710.698 seconds (Warm-up)
+Chain 8:                222.196 seconds (Sampling)
+Chain 8:                932.894 seconds (Total)
+Chain 8: 
+Inference for Stan model: regniere_structured.
+8 chains, each with iter=1250; warmup=750; thin=1; 
+post-warmup draws per chain=500, total post-warmup draws=4000.
+
+                  mean se_mean   sd      2.5%       25%       50%       75%
+phi_rho           0.62    0.00 0.11      0.41      0.54      0.61      0.69
+psi_rho           0.30    0.00 0.08      0.18      0.25      0.29      0.35
+y0_rho            0.33    0.00 0.05      0.26      0.30      0.33      0.36
+HA                0.36    0.00 0.05      0.26      0.33      0.36      0.39
+TL              278.34    0.00 0.18    278.04    278.22    278.32    278.45
+HL               13.24    0.05 3.38      8.39     10.80     12.70     14.97
+TH              310.69    0.02 1.05    309.16    309.94    310.51    311.28
+HH               29.49    0.12 8.69     15.40     23.28     28.60     34.78
+s_eps[1]          0.22    0.00 0.00      0.21      0.21      0.22      0.22
+s_eps[2]          0.31    0.00 0.01      0.29      0.30      0.31      0.31
+s_eps[3]          0.26    0.00 0.00      0.25      0.25      0.26      0.26
+s_eps[4]          0.31    0.00 0.01      0.30      0.31      0.31      0.31
+s_eps[5]          0.20    0.00 0.00      0.19      0.19      0.20      0.20
+s_upsilon[1]      0.22    0.00 0.10      0.09      0.14      0.19      0.26
+s_upsilon[2]      0.23    0.00 0.10      0.10      0.16      0.21      0.28
+s_upsilon[3]      0.23    0.00 0.10      0.09      0.15      0.20      0.28
+s_upsilon[4]      0.23    0.00 0.11      0.10      0.16      0.21      0.28
+s_upsilon[5]      0.22    0.00 0.10      0.09      0.15      0.20      0.27
+s_alpha           0.22    0.00 0.06      0.12      0.17      0.21      0.25
+upsilon[1]        0.19    0.01 0.41     -0.60     -0.08      0.19      0.47
+upsilon[2]        0.37    0.01 0.42     -0.44      0.07      0.35      0.64
+upsilon[3]       -0.04    0.01 0.39     -0.82     -0.29     -0.04      0.22
+upsilon[4]       -0.27    0.01 0.39     -1.04     -0.52     -0.27     -0.01
+upsilon[5]       -0.36    0.01 0.40     -1.16     -0.63     -0.35     -0.09
+upsilon[6]       -0.07    0.01 0.38     -0.80     -0.32     -0.07      0.18
+upsilon[7]       -0.11    0.01 0.38     -0.85     -0.35     -0.11      0.14
+upsilon[8]        0.41    0.01 0.44     -0.41      0.09      0.39      0.69
+upsilon[9]        0.44    0.01 0.45     -0.37      0.13      0.41      0.73
+upsilon[10]      -0.06    0.01 0.38     -0.80     -0.31     -0.07      0.20
+upsilon[11]      -0.21    0.01 0.37     -0.96     -0.46     -0.20      0.04
+upsilon[12]      -0.35    0.01 0.39     -1.13     -0.61     -0.34     -0.09
+upsilon[13]      -0.41    0.01 0.39     -1.22     -0.66     -0.40     -0.15
+upsilon[14]      -0.10    0.01 0.37     -0.82     -0.36     -0.11      0.14
+upsilon[15]       0.46    0.01 0.45     -0.41      0.16      0.44      0.74
+upsilon[16]       0.15    0.01 0.40     -0.66     -0.11      0.15      0.41
+upsilon[17]       0.25    0.01 0.39     -0.53      0.00      0.24      0.50
+upsilon[18]      -0.19    0.01 0.38     -0.98     -0.43     -0.18      0.05
+upsilon[19]      -0.47    0.01 0.42     -1.37     -0.75     -0.45     -0.18
+upsilon[20]      -0.27    0.01 0.39     -1.08     -0.52     -0.26     -0.01
+upsilon[21]       0.09    0.01 0.38     -0.66     -0.15      0.11      0.33
+upsilon[22]       0.60    0.01 0.46     -0.24      0.29      0.57      0.89
+upsilon[23]       0.31    0.01 0.40     -0.45      0.04      0.31      0.56
+upsilon[24]       0.11    0.01 0.38     -0.64     -0.14      0.11      0.36
+upsilon[25]      -0.07    0.01 0.37     -0.83     -0.32     -0.07      0.18
+upsilon[26]      -0.40    0.01 0.42     -1.30     -0.67     -0.38     -0.11
+upsilon[27]      -0.14    0.01 0.39     -0.94     -0.40     -0.13      0.12
+upsilon[28]      -0.04    0.01 0.39     -0.82     -0.30     -0.03      0.22
+upsilon[29]       0.45    0.01 0.42     -0.37      0.16      0.44      0.72
+upsilon[30]       0.38    0.01 0.40     -0.38      0.11      0.37      0.65
+upsilon[31]       0.23    0.01 0.39     -0.54     -0.04      0.23      0.49
+upsilon[32]      -0.16    0.01 0.40     -0.97     -0.43     -0.16      0.10
+upsilon[33]      -0.28    0.01 0.42     -1.14     -0.56     -0.28      0.00
+upsilon[34]      -0.15    0.01 0.40     -0.96     -0.41     -0.15      0.11
+upsilon[35]       0.12    0.01 0.39     -0.66     -0.14      0.13      0.38
+alpha[1]          0.25    0.01 0.77     -1.21     -0.29      0.24      0.77
+alpha[2]          0.21    0.01 0.62     -1.01     -0.19      0.21      0.61
+alpha[3]          0.04    0.01 0.60     -1.10     -0.37      0.03      0.44
+alpha[4]         -0.27    0.01 0.63     -1.47     -0.70     -0.27      0.15
+alpha[5]         -0.54    0.01 0.96     -2.44     -1.20     -0.57      0.09
+lp__         -16116.07    0.23 7.24 -16131.72 -16120.66 -16115.63 -16111.13
+                 97.5% n_eff Rhat
+phi_rho           0.83  3832 1.00
+psi_rho           0.51  2744 1.00
+y0_rho            0.43  2849 1.00
+HA                0.45  3515 1.00
+TL              278.75  3404 1.00
+HL               21.80  4009 1.00
+TH              313.21  4087 1.00
+HH               49.11  5233 1.00
+s_eps[1]          0.22  5753 1.00
+s_eps[2]          0.32  7429 1.00
+s_eps[3]          0.26  6038 1.00
+s_eps[4]          0.32  8251 1.00
+s_eps[5]          0.20  6232 1.00
+s_upsilon[1]      0.48  1432 1.00
+s_upsilon[2]      0.50  1520 1.00
+s_upsilon[3]      0.48  1387 1.01
+s_upsilon[4]      0.49  1671 1.00
+s_upsilon[5]      0.49  1798 1.00
+s_alpha           0.37  3139 1.00
+upsilon[1]        1.00  1910 1.00
+upsilon[2]        1.24  1805 1.00
+upsilon[3]        0.72  1860 1.00
+upsilon[4]        0.47  1854 1.00
+upsilon[5]        0.41  1956 1.00
+upsilon[6]        0.69  1902 1.00
+upsilon[7]        0.65  1892 1.00
+upsilon[8]        1.32  2000 1.00
+upsilon[9]        1.37  1948 1.00
+upsilon[10]       0.68  2037 1.00
+upsilon[11]       0.52  2174 1.00
+upsilon[12]       0.40  2117 1.00
+upsilon[13]       0.34  2135 1.00
+upsilon[14]       0.64  2125 1.00
+upsilon[15]       1.39  2429 1.00
+upsilon[16]       0.94  2307 1.00
+upsilon[17]       1.03  2257 1.00
+upsilon[18]       0.56  2043 1.00
+upsilon[19]       0.31  1991 1.00
+upsilon[20]       0.49  2017 1.00
+upsilon[21]       0.84  2192 1.00
+upsilon[22]       1.60  2501 1.00
+upsilon[23]       1.12  2176 1.00
+upsilon[24]       0.86  2072 1.00
+upsilon[25]       0.64  2024 1.00
+upsilon[26]       0.38  2130 1.00
+upsilon[27]       0.56  2117 1.00
+upsilon[28]       0.68  2169 1.00
+upsilon[29]       1.30  2179 1.00
+upsilon[30]       1.19  2030 1.00
+upsilon[31]       0.99  2056 1.00
+upsilon[32]       0.62  2013 1.00
+upsilon[33]       0.52  2096 1.00
+upsilon[34]       0.63  2044 1.00
+upsilon[35]       0.88  2053 1.00
+alpha[1]          1.79  4402 1.00
+alpha[2]          1.46  2580 1.00
+alpha[3]          1.24  2997 1.00
+alpha[4]          0.97  2779 1.00
+alpha[5]          1.39  4725 1.00
+lp__         -16102.96   987 1.01
+
+Samples were drawn using NUTS(diag_e) at Tue Nov 22 12:52:29 2022.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 0.000725 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 7.25 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 1: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 1: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 1: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 1: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 1: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 1: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 1: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 1: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 1: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 1: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 1: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 770.831 seconds (Warm-up)
+Chain 1:                116.929 seconds (Sampling)
+Chain 1:                887.761 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 0.000755 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 7.55 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 2: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 2: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 2: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 2: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 2: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 2: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 2: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 2: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 2: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 2: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 2: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 690.332 seconds (Warm-up)
+Chain 2:                85.66 seconds (Sampling)
+Chain 2:                775.992 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 0.000793 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 7.93 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 3: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 3: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 3: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 3: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 3: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 3: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 3: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 3: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 3: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 3: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 3: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 662.44 seconds (Warm-up)
+Chain 3:                116.223 seconds (Sampling)
+Chain 3:                778.663 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 0.000729 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 7.29 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 4: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 4: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 4: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 4: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 4: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 4: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 4: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 4: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 4: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 4: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 4: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 697.7 seconds (Warm-up)
+Chain 4:                102.57 seconds (Sampling)
+Chain 4:                800.27 seconds (Total)
+Chain 4: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 5).
+Chain 5: 
+Chain 5: Gradient evaluation took 0.000781 seconds
+Chain 5: 1000 transitions using 10 leapfrog steps per transition would take 7.81 seconds.
+Chain 5: Adjust your expectations accordingly!
+Chain 5: 
+Chain 5: 
+Chain 5: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 5: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 5: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 5: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 5: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 5: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 5: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 5: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 5: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 5: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 5: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 5: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 5: 
+Chain 5:  Elapsed Time: 671.355 seconds (Warm-up)
+Chain 5:                112.207 seconds (Sampling)
+Chain 5:                783.562 seconds (Total)
+Chain 5: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 6).
+Chain 6: 
+Chain 6: Gradient evaluation took 0.000746 seconds
+Chain 6: 1000 transitions using 10 leapfrog steps per transition would take 7.46 seconds.
+Chain 6: Adjust your expectations accordingly!
+Chain 6: 
+Chain 6: 
+Chain 6: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 6: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 6: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 6: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 6: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 6: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 6: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 6: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 6: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 6: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 6: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 6: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 6: 
+Chain 6:  Elapsed Time: 694.408 seconds (Warm-up)
+Chain 6:                119.593 seconds (Sampling)
+Chain 6:                814.001 seconds (Total)
+Chain 6: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 7).
+Chain 7: 
+Chain 7: Gradient evaluation took 0.000736 seconds
+Chain 7: 1000 transitions using 10 leapfrog steps per transition would take 7.36 seconds.
+Chain 7: Adjust your expectations accordingly!
+Chain 7: 
+Chain 7: 
+Chain 7: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 7: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 7: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 7: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 7: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 7: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 7: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 7: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 7: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 7: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 7: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 7: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 7: 
+Chain 7:  Elapsed Time: 703.818 seconds (Warm-up)
+Chain 7:                122.061 seconds (Sampling)
+Chain 7:                825.88 seconds (Total)
+Chain 7: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 8).
+Chain 8: 
+Chain 8: Gradient evaluation took 0.000693 seconds
+Chain 8: 1000 transitions using 10 leapfrog steps per transition would take 6.93 seconds.
+Chain 8: Adjust your expectations accordingly!
+Chain 8: 
+Chain 8: 
+Chain 8: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 8: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 8: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 8: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 8: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 8: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 8: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 8: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 8: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 8: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 8: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 8: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 8: 
+Chain 8:  Elapsed Time: 624.374 seconds (Warm-up)
+Chain 8:                125.618 seconds (Sampling)
+Chain 8:                749.992 seconds (Total)
+Chain 8: 
+Inference for Stan model: regniere_structured.
+8 chains, each with iter=750; warmup=500; thin=1; 
+post-warmup draws per chain=250, total post-warmup draws=2000.
+
+                  mean se_mean   sd      2.5%       25%       50%       75%
+phi_rho           0.62    0.00 0.11      0.41      0.54      0.62      0.69
+psi_rho           0.30    0.00 0.08      0.18      0.24      0.29      0.34
+y0_rho            0.33    0.00 0.05      0.25      0.30      0.33      0.36
+HA                0.36    0.00 0.05      0.27      0.32      0.36      0.39
+TL              278.34    0.00 0.17    278.06    278.22    278.33    278.45
+HL               13.13    0.06 3.14      8.48     10.92     12.63     14.85
+TH              310.67    0.02 1.01    309.17    309.91    310.52    311.26
+HH               29.48    0.18 8.72     15.58     23.27     28.48     34.77
+s_eps[1]          0.22    0.00 0.00      0.21      0.21      0.22      0.22
+s_eps[2]          0.31    0.00 0.01      0.29      0.30      0.31      0.31
+s_eps[3]          0.26    0.00 0.00      0.25      0.25      0.26      0.26
+s_eps[4]          0.31    0.00 0.01      0.30      0.31      0.31      0.31
+s_eps[5]          0.20    0.00 0.00      0.19      0.19      0.20      0.20
+s_upsilon[1]      0.22    0.00 0.11      0.08      0.14      0.19      0.26
+s_upsilon[2]      0.24    0.00 0.10      0.11      0.17      0.22      0.29
+s_upsilon[3]      0.23    0.00 0.11      0.09      0.15      0.21      0.28
+s_upsilon[4]      0.24    0.00 0.11      0.10      0.16      0.21      0.29
+s_upsilon[5]      0.23    0.00 0.11      0.09      0.15      0.20      0.28
+s_alpha           0.22    0.00 0.07      0.12      0.17      0.21      0.25
+upsilon[1]        0.22    0.01 0.40     -0.55     -0.04      0.22      0.48
+upsilon[2]        0.39    0.01 0.42     -0.39      0.13      0.38      0.67
+upsilon[3]       -0.02    0.01 0.38     -0.76     -0.27     -0.02      0.25
+upsilon[4]       -0.26    0.01 0.38     -1.04     -0.50     -0.26      0.00
+upsilon[5]       -0.35    0.01 0.40     -1.19     -0.61     -0.34     -0.07
+upsilon[6]       -0.06    0.01 0.37     -0.78     -0.31     -0.06      0.18
+upsilon[7]       -0.09    0.01 0.37     -0.80     -0.33     -0.09      0.16
+upsilon[8]        0.39    0.01 0.43     -0.40      0.09      0.38      0.66
+upsilon[9]        0.43    0.01 0.45     -0.37      0.11      0.41      0.71
+upsilon[10]      -0.05    0.01 0.39     -0.80     -0.31     -0.05      0.22
+upsilon[11]      -0.19    0.01 0.38     -0.96     -0.44     -0.19      0.08
+upsilon[12]      -0.34    0.01 0.39     -1.10     -0.59     -0.33     -0.07
+upsilon[13]      -0.39    0.01 0.39     -1.20     -0.64     -0.37     -0.13
+upsilon[14]      -0.10    0.01 0.38     -0.89     -0.34     -0.10      0.16
+upsilon[15]       0.43    0.01 0.45     -0.41      0.12      0.41      0.70
+upsilon[16]       0.13    0.01 0.40     -0.62     -0.15      0.12      0.41
+upsilon[17]       0.22    0.01 0.40     -0.53     -0.05      0.21      0.48
+upsilon[18]      -0.22    0.01 0.37     -0.97     -0.47     -0.22      0.03
+upsilon[19]      -0.51    0.01 0.42     -1.38     -0.78     -0.49     -0.22
+upsilon[20]      -0.31    0.01 0.39     -1.11     -0.55     -0.30     -0.06
+upsilon[21]       0.06    0.01 0.37     -0.65     -0.18      0.05      0.31
+upsilon[22]       0.59    0.01 0.46     -0.28      0.28      0.56      0.87
+upsilon[23]       0.31    0.01 0.40     -0.45      0.05      0.31      0.56
+upsilon[24]       0.12    0.01 0.38     -0.65     -0.13      0.12      0.37
+upsilon[25]      -0.07    0.01 0.37     -0.82     -0.32     -0.06      0.17
+upsilon[26]      -0.39    0.01 0.41     -1.27     -0.66     -0.36     -0.11
+upsilon[27]      -0.14    0.01 0.38     -0.94     -0.38     -0.13      0.13
+upsilon[28]      -0.04    0.01 0.39     -0.85     -0.29     -0.04      0.22
+upsilon[29]       0.42    0.02 0.44     -0.42      0.12      0.42      0.70
+upsilon[30]       0.36    0.02 0.42     -0.47      0.07      0.35      0.63
+upsilon[31]       0.20    0.02 0.41     -0.60     -0.08      0.20      0.49
+upsilon[32]      -0.19    0.02 0.43     -1.00     -0.48     -0.20      0.12
+upsilon[33]      -0.31    0.02 0.45     -1.20     -0.62     -0.31      0.02
+upsilon[34]      -0.18    0.02 0.42     -0.99     -0.48     -0.18      0.13
+upsilon[35]       0.09    0.02 0.42     -0.70     -0.19      0.09      0.38
+alpha[1]          0.27    0.02 0.80     -1.26     -0.25      0.24      0.76
+alpha[2]          0.23    0.02 0.64     -1.05     -0.18      0.25      0.66
+alpha[3]          0.01    0.02 0.62     -1.23     -0.42      0.03      0.42
+alpha[4]         -0.24    0.02 0.63     -1.53     -0.64     -0.25      0.18
+alpha[5]         -0.50    0.02 0.92     -2.27     -1.12     -0.49      0.10
+lp__         -16115.79    0.35 7.52 -16131.68 -16120.38 -16115.52 -16110.68
+                 97.5% n_eff Rhat
+phi_rho           0.83  1713 1.00
+psi_rho           0.50  1080 1.00
+y0_rho            0.44  1272 1.00
+HA                0.44  1785 1.00
+TL              278.73  1664 1.00
+HL               20.33  2374 1.00
+TH              312.95  2086 1.00
+HH               48.72  2445 1.00
+s_eps[1]          0.22  2733 1.00
+s_eps[2]          0.32  2716 1.00
+s_eps[3]          0.27  2516 1.00
+s_eps[4]          0.32  2997 1.00
+s_eps[5]          0.20  2218 1.00
+s_upsilon[1]      0.48   729 1.01
+s_upsilon[2]      0.50   964 1.01
+s_upsilon[3]      0.48   760 1.01
+s_upsilon[4]      0.50   568 1.01
+s_upsilon[5]      0.52   789 1.01
+s_alpha           0.36  1212 1.00
+upsilon[1]        1.01   950 1.01
+upsilon[2]        1.24   953 1.01
+upsilon[3]        0.72   924 1.01
+upsilon[4]        0.47   724 1.01
+upsilon[5]        0.41   767 1.01
+upsilon[6]        0.66   845 1.01
+upsilon[7]        0.63   917 1.01
+upsilon[8]        1.27   966 1.01
+upsilon[9]        1.41   916 1.00
+upsilon[10]       0.70   895 1.00
+upsilon[11]       0.54   941 1.01
+upsilon[12]       0.38   971 1.01
+upsilon[13]       0.34   959 1.01
+upsilon[14]       0.65   952 1.01
+upsilon[15]       1.37  1153 1.00
+upsilon[16]       0.98  1069 1.00
+upsilon[17]       1.01   985 1.00
+upsilon[18]       0.50   961 1.00
+upsilon[19]       0.27   925 1.00
+upsilon[20]       0.43   963 1.00
+upsilon[21]       0.81   950 1.00
+upsilon[22]       1.60  1033 1.01
+upsilon[23]       1.12  1074 1.01
+upsilon[24]       0.84  1010 1.01
+upsilon[25]       0.61   949 1.01
+upsilon[26]       0.38   943 1.01
+upsilon[27]       0.58   937 1.01
+upsilon[28]       0.69  1021 1.00
+upsilon[29]       1.35   736 1.01
+upsilon[30]       1.22   692 1.01
+upsilon[31]       1.01   674 1.01
+upsilon[32]       0.62   649 1.01
+upsilon[33]       0.53   653 1.01
+upsilon[34]       0.62   642 1.01
+upsilon[35]       0.89   714 1.01
+alpha[1]          1.96  1987 1.00
+alpha[2]          1.51  1051 1.00
+alpha[3]          1.17  1331 1.00
+alpha[4]          1.08  1390 1.00
+alpha[5]          1.36  2269 1.00
+lp__         -16102.21   450 1.01
+
+Samples were drawn using NUTS(diag_e) at Tue Nov 22 16:01:40 2022.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).

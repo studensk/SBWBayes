@@ -28,14 +28,17 @@ stages <- paste0('L', 2:6)
 # }
 prior.samp <- function(chains) {
   l <- lapply(1:chains, function(x) {
+    tl <- exp(rnorm(1, 5.64, 0.0067))
+    tdiff <- rgamma(1, 112, scale = 0.226) 
+    th <- tl + tdiff
     lst <- list(
       'phi_rho' = rbeta(1, 4, 4),
       'psi_rho' = rbeta(1, 4, 4),
       'y0_rho' = rgamma(1, 8.3, scale = 0.046),
       'HA' = rgamma(1, 5.4, scale = 0.134),
-      'TL' = rnorm(5, 281, 1.9),
+      'TL' = tl,
       'HL' = -rgamma(1, 3.6, scale = 2.253),
-      'TH' = rnorm(5, 306.3, 1.4),
+      'TH' = th,
       'HH' = rgamma(1, 7.6, scale = 3.12),
       's_eps' = exp(rnorm(5, -1.5, 0.1)),
       's_upsilon' = exp(rnorm(5, -0.5, 0.5)),

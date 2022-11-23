@@ -1,0 +1,663 @@
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 0.000971 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 9.71 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:    1 / 1250 [  0%]  (Warmup)
+Chain 1: Iteration:  125 / 1250 [ 10%]  (Warmup)
+Chain 1: Iteration:  250 / 1250 [ 20%]  (Warmup)
+Chain 1: Iteration:  375 / 1250 [ 30%]  (Warmup)
+Chain 1: Iteration:  500 / 1250 [ 40%]  (Warmup)
+Chain 1: Iteration:  625 / 1250 [ 50%]  (Warmup)
+Chain 1: Iteration:  750 / 1250 [ 60%]  (Warmup)
+Chain 1: Iteration:  751 / 1250 [ 60%]  (Sampling)
+Chain 1: Iteration:  875 / 1250 [ 70%]  (Sampling)
+Chain 1: Iteration: 1000 / 1250 [ 80%]  (Sampling)
+Chain 1: Iteration: 1125 / 1250 [ 90%]  (Sampling)
+Chain 1: Iteration: 1250 / 1250 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 933.565 seconds (Warm-up)
+Chain 1:                312.122 seconds (Sampling)
+Chain 1:                1245.69 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 2).
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: Rejecting initial value:
+Chain 2:   Gradient evaluated at the initial value is not finite.
+Chain 2:   Stan can't start sampling from this initial value.
+Chain 2: 
+Chain 2: Initialization between (-2, 2) failed after 100 attempts. 
+Chain 2:  Try specifying initial values, reducing ranges of constrained values, or reparameterizing the model.
+[1] "Error in sampler$call_sampler(args_list[[i]]) : Initialization failed."
+Stan model 'regniere_structured' does not contain samples.
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 1).
+Chain 1: 
+Chain 1: Gradient evaluation took 0.001018 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 10.18 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 1: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 1: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 1: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 1: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 1: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 1: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 1: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 1: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 1: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 1: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 1: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 1: 
+Chain 1:  Elapsed Time: 862.128 seconds (Warm-up)
+Chain 1:                185.021 seconds (Sampling)
+Chain 1:                1047.15 seconds (Total)
+Chain 1: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 2).
+Chain 2: 
+Chain 2: Gradient evaluation took 0.000964 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 9.64 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 2: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 2: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 2: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 2: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 2: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 2: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 2: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 2: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 2: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 2: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 2: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 2: 
+Chain 2:  Elapsed Time: 1076.96 seconds (Warm-up)
+Chain 2:                203.687 seconds (Sampling)
+Chain 2:                1280.65 seconds (Total)
+Chain 2: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 3).
+Chain 3: 
+Chain 3: Gradient evaluation took 0.000906 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 9.06 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 3: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 3: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 3: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 3: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 3: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 3: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 3: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 3: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 3: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 3: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 3: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 3: 
+Chain 3:  Elapsed Time: 948.232 seconds (Warm-up)
+Chain 3:                194.865 seconds (Sampling)
+Chain 3:                1143.1 seconds (Total)
+Chain 3: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 4).
+Chain 4: 
+Chain 4: Gradient evaluation took 0.000883 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 8.83 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 4: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 4: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 4: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 4: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 4: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 4: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 4: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 4: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 4: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 4: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 4: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 4: 
+Chain 4:  Elapsed Time: 804.842 seconds (Warm-up)
+Chain 4:                174.1 seconds (Sampling)
+Chain 4:                978.942 seconds (Total)
+Chain 4: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 5).
+Chain 5: 
+Chain 5: Gradient evaluation took 0.000942 seconds
+Chain 5: 1000 transitions using 10 leapfrog steps per transition would take 9.42 seconds.
+Chain 5: Adjust your expectations accordingly!
+Chain 5: 
+Chain 5: 
+Chain 5: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 5: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 5: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 5: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 5: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 5: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 5: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 5: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 5: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 5: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 5: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 5: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 5: 
+Chain 5:  Elapsed Time: 997.303 seconds (Warm-up)
+Chain 5:                185.744 seconds (Sampling)
+Chain 5:                1183.05 seconds (Total)
+Chain 5: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 6).
+Chain 6: 
+Chain 6: Gradient evaluation took 0.000891 seconds
+Chain 6: 1000 transitions using 10 leapfrog steps per transition would take 8.91 seconds.
+Chain 6: Adjust your expectations accordingly!
+Chain 6: 
+Chain 6: 
+Chain 6: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 6: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 6: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 6: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 6: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 6: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 6: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 6: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 6: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 6: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 6: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 6: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 6: 
+Chain 6:  Elapsed Time: 904.59 seconds (Warm-up)
+Chain 6:                134.325 seconds (Sampling)
+Chain 6:                1038.91 seconds (Total)
+Chain 6: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 7).
+Chain 7: 
+Chain 7: Gradient evaluation took 0.000885 seconds
+Chain 7: 1000 transitions using 10 leapfrog steps per transition would take 8.85 seconds.
+Chain 7: Adjust your expectations accordingly!
+Chain 7: 
+Chain 7: 
+Chain 7: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 7: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 7: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 7: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 7: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 7: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 7: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 7: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 7: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 7: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 7: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 7: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 7: 
+Chain 7:  Elapsed Time: 856.847 seconds (Warm-up)
+Chain 7:                189.458 seconds (Sampling)
+Chain 7:                1046.3 seconds (Total)
+Chain 7: 
+
+SAMPLING FOR MODEL 'tmb_generic' NOW (CHAIN 8).
+Chain 8: 
+Chain 8: Gradient evaluation took 0.000887 seconds
+Chain 8: 1000 transitions using 10 leapfrog steps per transition would take 8.87 seconds.
+Chain 8: Adjust your expectations accordingly!
+Chain 8: 
+Chain 8: 
+Chain 8: Iteration:   1 / 750 [  0%]  (Warmup)
+Chain 8: Iteration:  75 / 750 [ 10%]  (Warmup)
+Chain 8: Iteration: 150 / 750 [ 20%]  (Warmup)
+Chain 8: Iteration: 225 / 750 [ 30%]  (Warmup)
+Chain 8: Iteration: 300 / 750 [ 40%]  (Warmup)
+Chain 8: Iteration: 375 / 750 [ 50%]  (Warmup)
+Chain 8: Iteration: 450 / 750 [ 60%]  (Warmup)
+Chain 8: Iteration: 501 / 750 [ 66%]  (Sampling)
+Chain 8: Iteration: 575 / 750 [ 76%]  (Sampling)
+Chain 8: Iteration: 650 / 750 [ 86%]  (Sampling)
+Chain 8: Iteration: 725 / 750 [ 96%]  (Sampling)
+Chain 8: Iteration: 750 / 750 [100%]  (Sampling)
+Chain 8: 
+Chain 8:  Elapsed Time: 951.382 seconds (Warm-up)
+Chain 8:                197.254 seconds (Sampling)
+Chain 8:                1148.64 seconds (Total)
+Chain 8: 
+Inference for Stan model: regniere_structured.
+8 chains, each with iter=750; warmup=500; thin=1; 
+post-warmup draws per chain=250, total post-warmup draws=2000.
+
+                  mean se_mean   sd      2.5%       25%       50%       75%
+phi_rho           0.22    0.00 0.07      0.12      0.17      0.20      0.25
+psi_rho           0.64    0.00 0.11      0.42      0.56      0.64      0.72
+y0_rho            0.32    0.00 0.05      0.23      0.28      0.32      0.36
+HA                0.91    0.00 0.06      0.80      0.87      0.91      0.95
+TL              277.22    0.01 0.34    276.44    277.04    277.27    277.45
+HL               13.12    0.08 3.71      7.43     10.42     12.49     15.18
+TH              306.94    0.01 0.25    306.39    306.79    306.96    307.13
+HH               27.50    0.18 6.67     17.82     22.83     26.32     31.04
+s_eps[1]          0.25    0.00 0.00      0.24      0.24      0.25      0.25
+s_eps[2]          0.25    0.00 0.00      0.24      0.25      0.25      0.26
+s_eps[3]          0.27    0.00 0.01      0.26      0.27      0.27      0.27
+s_eps[4]          0.27    0.00 0.01      0.26      0.27      0.27      0.28
+s_eps[5]          0.24    0.00 0.00      0.23      0.23      0.24      0.24
+s_upsilon[1]      0.22    0.01 0.12      0.08      0.14      0.20      0.27
+s_upsilon[2]      0.24    0.00 0.11      0.10      0.17      0.22      0.30
+s_upsilon[3]      0.26    0.00 0.10      0.12      0.18      0.24      0.31
+s_upsilon[4]      0.28    0.00 0.11      0.13      0.20      0.25      0.33
+s_upsilon[5]      0.28    0.00 0.11      0.12      0.20      0.26      0.33
+s_alpha           0.22    0.00 0.07      0.12      0.17      0.21      0.26
+upsilon[1]        0.08    0.01 0.40     -0.68     -0.20      0.08      0.36
+upsilon[2]        0.19    0.01 0.39     -0.56     -0.07      0.20      0.46
+upsilon[3]        0.52    0.01 0.43     -0.27      0.22      0.51      0.80
+upsilon[4]       -0.12    0.01 0.41     -0.92     -0.41     -0.11      0.17
+upsilon[5]       -0.03    0.01 0.42     -0.85     -0.32     -0.03      0.26
+upsilon[6]        0.03    0.01 0.40     -0.76     -0.25      0.04      0.32
+upsilon[7]       -0.06    0.01 0.41     -0.88     -0.33     -0.05      0.23
+upsilon[8]        0.34    0.01 0.40     -0.39      0.06      0.32      0.59
+upsilon[9]        0.56    0.01 0.42     -0.17      0.26      0.54      0.83
+upsilon[10]       0.28    0.01 0.37     -0.39      0.02      0.27      0.53
+upsilon[11]      -0.39    0.01 0.40     -1.21     -0.63     -0.39     -0.12
+upsilon[12]      -0.39    0.01 0.40     -1.24     -0.63     -0.38     -0.11
+upsilon[13]       0.10    0.01 0.36     -0.58     -0.16      0.09      0.33
+upsilon[14]      -0.23    0.01 0.37     -0.97     -0.47     -0.23      0.02
+upsilon[15]       0.57    0.01 0.46     -0.25      0.25      0.54      0.87
+upsilon[16]       0.42    0.01 0.40     -0.31      0.15      0.41      0.68
+upsilon[17]       0.15    0.01 0.38     -0.57     -0.11      0.15      0.40
+upsilon[18]      -0.29    0.01 0.38     -1.05     -0.54     -0.29     -0.03
+upsilon[19]      -0.64    0.01 0.43     -1.60     -0.92     -0.61     -0.34
+upsilon[20]       0.05    0.01 0.37     -0.64     -0.20      0.04      0.29
+upsilon[21]      -0.31    0.01 0.38     -1.08     -0.57     -0.30     -0.06
+upsilon[22]       0.69    0.01 0.49     -0.18      0.34      0.67      1.00
+upsilon[23]       0.27    0.01 0.40     -0.49     -0.01      0.26      0.54
+upsilon[24]       0.20    0.01 0.39     -0.52     -0.06      0.19      0.46
+upsilon[25]      -0.45    0.01 0.38     -1.23     -0.70     -0.44     -0.19
+upsilon[26]      -0.72    0.01 0.42     -1.61     -1.00     -0.70     -0.42
+upsilon[27]       0.19    0.01 0.39     -0.55     -0.07      0.18      0.45
+upsilon[28]      -0.31    0.01 0.38     -1.08     -0.56     -0.31     -0.06
+upsilon[29]       0.60    0.01 0.49     -0.29      0.26      0.58      0.92
+upsilon[30]       0.31    0.01 0.42     -0.48      0.02      0.31      0.58
+upsilon[31]       0.01    0.01 0.37     -0.74     -0.24      0.00      0.24
+upsilon[32]      -0.59    0.01 0.39     -1.38     -0.84     -0.58     -0.32
+upsilon[33]      -0.66    0.01 0.40     -1.47     -0.92     -0.64     -0.39
+upsilon[34]       0.02    0.01 0.38     -0.70     -0.24      0.01      0.26
+upsilon[35]      -0.30    0.01 0.39     -1.07     -0.56     -0.30     -0.05
+alpha[1]         -0.70    0.02 0.99     -2.61     -1.39     -0.71     -0.03
+alpha[2]         -0.14    0.02 0.63     -1.38     -0.56     -0.14      0.27
+alpha[3]          0.03    0.02 0.64     -1.19     -0.40      0.00      0.46
+alpha[4]          0.14    0.02 0.62     -1.09     -0.28      0.13      0.55
+alpha[5]          0.45    0.02 0.77     -1.04     -0.06      0.43      0.97
+lp__         -17300.42    0.37 7.24 -17316.06 -17304.96 -17300.08 -17295.44
+                 97.5% n_eff Rhat
+phi_rho           0.40  1066 1.00
+psi_rho           0.84  2156 1.00
+y0_rho            0.44  1700 1.00
+HA                1.02  2170 1.00
+TL              277.74  1640 1.00
+HL               21.73  2166 1.00
+TH              307.38  1746 1.00
+HH               42.60  1450 1.00
+s_eps[1]          0.26  3125 1.00
+s_eps[2]          0.26  3051 1.00
+s_eps[3]          0.28  3492 1.00
+s_eps[4]          0.28  3335 1.00
+s_eps[5]          0.25  2813 1.00
+s_upsilon[1]      0.54   441 1.01
+s_upsilon[2]      0.51   569 1.02
+s_upsilon[3]      0.51   910 1.01
+s_upsilon[4]      0.56   822 1.00
+s_upsilon[5]      0.56   878 1.00
+s_alpha           0.39  1549 1.00
+upsilon[1]        0.81  1011 1.00
+upsilon[2]        0.93  1096 1.00
+upsilon[3]        1.39  1141 1.00
+upsilon[4]        0.66   916 1.00
+upsilon[5]        0.74  1035 1.00
+upsilon[6]        0.80  1059 1.00
+upsilon[7]        0.70   971 1.00
+upsilon[8]        1.21  1136 1.00
+upsilon[9]        1.45   843 1.00
+upsilon[10]       1.05  1052 1.00
+upsilon[11]       0.33  1106 1.00
+upsilon[12]       0.31  1106 1.00
+upsilon[13]       0.82  1112 1.00
+upsilon[14]       0.47  1097 1.00
+upsilon[15]       1.56  1246 1.00
+upsilon[16]       1.29  1105 1.01
+upsilon[17]       0.92  1157 1.00
+upsilon[18]       0.43  1144 1.01
+upsilon[19]       0.17  1108 1.01
+upsilon[20]       0.80  1171 1.00
+upsilon[21]       0.42  1188 1.01
+upsilon[22]       1.71  1116 1.00
+upsilon[23]       1.06  1084 1.00
+upsilon[24]       0.95  1045 1.00
+upsilon[25]       0.26  1072 1.00
+upsilon[26]       0.04  1094 1.00
+upsilon[27]       1.00  1085 1.00
+upsilon[28]       0.39  1114 1.00
+upsilon[29]       1.60  1255 1.00
+upsilon[30]       1.18  1110 1.01
+upsilon[31]       0.76  1203 1.01
+upsilon[32]       0.16  1261 1.00
+upsilon[33]       0.13  1301 1.00
+upsilon[34]       0.81  1286 1.00
+upsilon[35]       0.49  1385 1.00
+alpha[1]          1.25  2083 1.00
+alpha[2]          1.12  1573 1.00
+alpha[3]          1.30  1653 1.00
+alpha[4]          1.35  1615 1.00
+alpha[5]          2.01  2225 1.00
+lp__         -17287.44   378 1.02
+
+Samples were drawn using NUTS(diag_e) at Tue Nov 22 16:42:32 2022.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).
