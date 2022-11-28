@@ -10,7 +10,7 @@ source('code/test_stan.R')
 ##### Generate and Clean Data #####
 set.seed(123)
 ptm <- proc.time()
-data.lst <- gen.pops(1000)
+data.lst <- gen.pops(20)
 proc.time() - ptm
 
 priors.lst <- lapply(1:length(data.lst), function(i) {
@@ -53,21 +53,31 @@ write.csv(all.data, 'data/sim_data.csv')
 parms <- list(
   'phi_rho' = 0.5,
   'psi_rho' = 0.5,
-  'y0_rho' = 0.5,
-  'HL' = 8.4,
-  'HH' = 9.3,
-  'HA' = 1.4, 
+  'y0_rho' = 0.38,
+  'HL' = 8.1,
+  'HH' = 20,
+  'HA' = 0.72, 
   'TL' = 285.90432,
   'TH' = 306.47530,
   's_eps' = rep(0.3, 5),
-  's_upsilon' = rep(0.08, 5),
+  's_upsilon' = rep(0.6, 5),
   's_alpha' = 0.22)
 
 
 set.seed(124)
 
+basename <- "regniere_structured"
+basename_loc <- paste0('code/', basename)
+cc <- compile(paste0(basename_loc, '.cpp'))
+try(dyn.unload(dynlib(basename_loc)),silent=TRUE)
+dyn.load(dynlib(basename_loc))
+
+nList <- lme4:::namedList
+stages <- paste0('L', 2:6)
+
 samps <- unique(all.data$prior.samp)
 sv.lst <- lapply(samps, function(x) {
+  print(x)
   dd <- subset(all.data, prior.samp == x)
   dd$stagename <- dd$stage
   dd$stage <- as.numeric(factor(dd$stage)) - 1
@@ -86,7 +96,7 @@ sv.lst <- lapply(samps, function(x) {
       nstage <- length(unique(dd2$stage))
       
       parms$upsilon <- rep(0, nblock)
-      parms$alpha <- rep(0, nstage)
+      parms$alpha <- rep(0.05, nstage)
       
       pnames <- c(#"rho25",
         "phi_rho", "psi_rho", "y0_rho",
@@ -98,13 +108,15 @@ sv.lst <- lapply(samps, function(x) {
                       DLL=basename,
                       random=c('upsilon', 'alpha'),
                       silent=TRUE)
-      mod <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                       chains = 0)
+      
+      mod <- tmbstan(ff, init = unlist(parms[1:(length(parms)-2)]), silent = TRUE, 
+                     chains = 0)
       
       ps$upsilon <- rep(0, nblock)
       ps$alpha <- rep(0.05, nstage)
+      ps$HL <- abs(ps$HL)
       
-      gr <- grad_log_prob(stan1, unlist(ps))
+      gr <- grad_log_prob(mod, unlist(ps))
       anyna <- any(is.na(gr))
     }
     return(ps)
@@ -115,7 +127,7 @@ sv.lst <- lapply(samps, function(x) {
 
 ## Set up data for model input
 cl <- makeCluster(40)
-clusterExport(cl, c('data.lst', 'all.data', 'parms', 'prior.samp', 'sv.lst'))
+clusterExport(cl, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
 clusterEvalQ(cl,{
   library(tidyverse)
   library(tmbstan)
