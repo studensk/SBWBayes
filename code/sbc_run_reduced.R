@@ -9,7 +9,7 @@ source('code/data_simulation.R')
 ##### Generate and Clean Data #####
 set.seed(123)
 ptm <- proc.time()
-data.lst <- gen.pops(100)
+data.lst <- gen.pops(1000)
 proc.time() - ptm
 
 priors.lst <- lapply(1:length(data.lst), function(i) {
@@ -166,7 +166,7 @@ sv.lst <- lapply(samps, function(x) {
 })
 
 ## Set up data for model input
-cl1 <- makeCluster(40)
+cl1 <- makeCluster(400)
 clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
 clusterEvalQ(cl1,{
   library(tidyverse)
@@ -185,7 +185,7 @@ clusterEvalQ(cl1,{
   stages <- paste0('L', 2:6)
 })
 
-gr.lst1 <- parLapply(cl1, 1:100, function(i) {
+gr.lst1 <- parLapply(cl1, 1:1000, function(i) {
   
   dd <- subset(all.data, prior.samp == i)
   dd$stagename <- dd$stage
