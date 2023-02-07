@@ -6,31 +6,15 @@ nList <- lme4:::namedList
 stages <- paste0('L', 2:6)
 
 ##### Prior Sampling #####
-# prior.samp <- function(chains) {
-#   l <- lapply(1:chains, function(x) {
-#     lst <- list(
-#       'phi_rho' = rbeta(1, 4, 4),
-#       'psi_rho' = rbeta(1, 4, 4),
-#       'y0_rho' = rgamma(1, 5, scale = 0.1),
-#       'HA' = rgamma(5, 5, scale = 0.2),
-#       'TL' = rnorm(5, 284, 2),
-#       'HL' = -rgamma(5, 6, scale = 2),
-#       'TH' = rnorm(5, 304, 2),
-#       'HH' = rgamma(5, 10, scale = 3),
-#       's_eps' = exp(rnorm(5, -1.5, 0.1)),
-#       's_upsilon' = exp(rnorm(5, -2.5, 0.05)),
-#       's_alpha' = exp(rnorm(1, -1.5, 0.3)),
-#       'alpha' = 0.05
-#     )
-#     return(lst)
-#   })
-#   return(l)
-# }
 prior.samp <- function(chains) {
   l <- lapply(1:chains, function(x) {
     tl <- exp(rnorm(1, 5.64, 0.0067))
     tdiff <- rgamma(1, 112, scale = 0.226) 
     th <- tl + tdiff
+    s_upsilon <- exp(rnorm(5, -2.5, 0.05))
+    s_alpha <- exp(rnorm(1, -1.5, 0.3))
+    sa2 <- (-s_alpha^2)/2
+    alpha <- rnorm(5, sa2, s_alpha)
     lst <- list(
       'phi_rho' = rbeta(1, 4, 4),
       'psi_rho' = rbeta(1, 4, 4),
@@ -41,9 +25,12 @@ prior.samp <- function(chains) {
       'TH' = th,
       'HH' = rgamma(1, 7.6, scale = 3.12),
       's_eps' = exp(rnorm(5, -1.5, 0.1)),
-      's_upsilon' = exp(rnorm(5, -0.5, 0.5)),
-      's_alpha' = exp(rnorm(1, -1.5, 0.3)),
-      'alpha' = 0.05
+      's_upsilon' = s_upsilon,
+      's_alpha' = s_alpha,
+      #'upsilon' = rlnorm(35, 0, rep(s_upsilon, each = 7)),
+      'upsilon' = exp(rcauchy(35, 0, rep(s_upsilon, 7))),
+      'alpha' = alpha,
+      'zeta' = exp(alpha)
     )
     return(lst)
   })
@@ -67,8 +54,8 @@ ind.progress <- function(param.df, dev.df) {
   i <- 1
   dev.lst <- list()
   extra.dev <- 0
-  dev.df$r.treatment <- dev.df$r.treatment*deltas
-  dev.df$r.sustainable <- dev.df$r.sustainable*deltas
+  dev.df$r.treatment <- dev.df$r.treatment/deltas
+  dev.df$r.sustainable <- dev.df$r.sustainable/deltas
   
   for (s in 1:length(stages)) {
     st <- stages[s]
@@ -125,11 +112,16 @@ pop.dev <- function(t.treat, param.df, size = 250) {
   else {all.temps <- c('treatment' = t.treat, 'sustainable' = t.treat)}
   dev.lst <- lapply(stages, function(st) {
     s <- which(stages == st)
-    params <- param.df[s,]
+    params <- subset(param.df, stage == st & temp == t.treat)
+    params$ups_sus <- subset(param.df, stage == st & temp == all.temps['sustainable'])$upsilon
     times <- with(params, {
-      rho25 <- quadratic(s-3, phi_rho, psi_rho, y0_rho)
+      rho25 <- quadratic(s-3, phi_rho, psi_rho, y0_rho)*zeta
       TA <- ta.fun(HL, HH, TL, TH)
-      calc_pred3(all.temps, rho25, HA, TL, HL, TH, HH, TA)})
+      cp1 <- calc_pred3(all.temps[1], rho25, HA, TL, HL, TH, HH, TA)*upsilon
+      cp2 <- calc_pred3(all.temps[2], rho25, HA, TL, HL, TH, HH, TA)*ups_sus
+      cvec <- c(unique(cp1), unique(cp2))
+      names(cvec) <- names(all.temps)
+      return(cvec)})
     rates <- 1/times
     names(rates) <- paste('r', names(all.temps))
     s.df <- as.data.frame(append(as.list(all.temps), as.list(rates)))
@@ -146,16 +138,22 @@ pop.dev <- function(t.treat, param.df, size = 250) {
   df <- bind_rows(l)
   nms <- c('treatment', 'sustainable', 'stage', 'time.treatment', 'time.sustainable', 'nobs')
   df <- df[,nms]
-  ag <- aggregate(data = df, nobs ~ ., sum)
-  return(ag)
+  df$cup <- rep(1:size, each = 5)
+  #ag <- aggregate(data = df, nobs ~ ., sum)
+  #return(ag)
+  return(df)
 }
 
 gen.pops <- function(N) {
   ps <- prior.samp(N)
   lst <- lapply(1:N, function(i) {
     p <- ps[[i]]
+    pdf <- as.data.frame(p)
+    pdf$stage <- rep(stages, 7)
+    pdf$temp <- rep(seq(5, 35, by = 5), each = 5)
     t.lst <- lapply(seq(5, 35, by = 5), function(tmp) {
-      pdat <- pop.dev(tmp, as.data.frame(p))
+      #psub <- subset(pdf, temp == tmp)
+      pdat <- pop.dev(tmp, pdf)
     })
     pd <- bind_rows(t.lst)
     pd$prior.samp <- i
