@@ -262,108 +262,108 @@ diag.lst <- lapply(gr.lst, function(fit) {
 diag.df <- bind_rows(diag.lst)
 write.csv(diag.df, 'code/output/diagnostics_reduced.csv')
 
-post.lst <- lapply(gr.lst, as.data.frame)
-rows <- sapply(post.lst, nrow)
-w <- which(rows > 0)
-post.lst.red <- lapply(post.lst, function(x) {
-  if (nrow(x) > 0) {
-    rows <- sample(1:nrow(x), 100)
-    return(x[rows,])
-  }
-  else {return(NULL)}
-})
-
-
-curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
-                'HA', 'TL', 'HL', 'TH', 'HH', 's_alpha')
-priors.df.new <- priors.df
-priors.df.new$prior.samp <- as.numeric(factor(priors.df.new$prior.samp))
-ranks.lst <- lapply(w, function(x) {
-  if (is.null(post.lst.red[[x]])) {return(NULL)}
-  prior <- subset(priors.df.new, prior.samp == x)
-  
-  prior.cp <- prior[,curve.pars]
-  prior.cp <- prior.cp[!duplicated(prior.cp),]
-  
-  posterior <- post.lst.red[[x]]
-  post.cp <- posterior[,curve.pars]
-  
-  ranks.cp <- sapply(curve.pars, function(cp) {
-    prior <- prior.cp[1,cp]
-    post <- post.cp[,cp]
-    if (cp == 'HL') {
-      post <- -abs(post)
-      prior <- -abs(prior)
-    }
-    rnk <- length(which(post < prior))/length(post)
-    return(rnk)
-  })
-  
-  post.seps <- posterior[,grep('s_eps', names(posterior))]
-  prior.seps <- prior$s_eps
-  
-  ranks.seps <- sapply(1:length(unique(prior.seps)), function(i) {
-    pr <- unique(prior.seps)[i]
-    post <- post.seps[,i]
-    rnk <- length(which(post < pr))/length(post)
-    return(rnk)
-  })
-  names(ranks.seps) <- names(post.seps)
-  
-  post.sups <- posterior[,grep('s_upsilon', names(posterior))]
-  prior.sups <- prior$s_upsilon
-  
-  ranks.sups <- sapply(1:length(unique(prior.sups)), function(i) {
-    prior <- unique(prior.sups)[i]
-    post <- post.sups[,i]
-    rnk <- length(which(post < prior))/length(post)
-    return(rnk)
-  })
-  names(ranks.sups) <- names(post.sups)
-  
-  return(c(ranks.cp, ranks.seps, ranks.sups))
-})
-ranks.df <- bind_rows(ranks.lst)
-write.csv(ranks.df, 'code/output/ranks_reduced.csv')
-
-par(mfrow = c(3, 3)) 
-for (i in 1:ncol(ranks.df)) {
-  hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 15)
-}
-
-
-##### Re-Generate Data #####
-par.names <- sapply(names(post.lst[[1]]), function(x) {
-  strsplit(x, split = '[.]')[[1]][1]
-})
-upn <- unique(par.names)[2:(length(unique(par.names))-1)]
-ps.lst <- lapply(1:nrow(post.lst[[1]]), function(r) {
-  row <- unlist(post.lst[[1]][r,])
-  lap <- lapply(upn, function(x) {
-    row[which(par.names == x)]
-  })
-  names(lap) <- upn
-  lap <- append(lap, list(exp(lap$alpha)))
-  names(lap)[length(lap)] <- 'zeta'
-  lap$HL <- -lap$HL
-  return(lap)
-})
-
-gen.pops2 <- function(N) {
-  ps <- ps.lst[sample(1:length(ps.lst), N)]
-  lst <- lapply(1:length(ps), function(i) {
-    p <- ps.lst[[i]]
-    pdf <- as.data.frame(p)
-    pdf$stage <- rep(stages, 7)
-    pdf$temp <- rep(seq(5, 35, by = 5), each = 5)
-    t.lst <- lapply(seq(5, 35, by = 5), function(tmp) {
-      #psub <- subset(pdf, temp == tmp)
-      pdat <- pop.dev(tmp, pdf)
-    })
-    pd <- bind_rows(t.lst)
-    pd$prior.samp <- i
-    return(list('priors' = p, 'data' = pd))
-  })
-  return(lst)
-}
-
+# post.lst <- lapply(gr.lst, as.data.frame)
+# rows <- sapply(post.lst, nrow)
+# w <- which(rows > 0)
+# post.lst.red <- lapply(post.lst, function(x) {
+#   if (nrow(x) > 0) {
+#     rows <- sample(1:nrow(x), 100)
+#     return(x[rows,])
+#   }
+#   else {return(NULL)}
+# })
+# 
+# 
+# curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
+#                 'HA', 'TL', 'HL', 'TH', 'HH', 's_alpha')
+# priors.df.new <- priors.df
+# priors.df.new$prior.samp <- as.numeric(factor(priors.df.new$prior.samp))
+# ranks.lst <- lapply(w, function(x) {
+#   if (is.null(post.lst.red[[x]])) {return(NULL)}
+#   prior <- subset(priors.df.new, prior.samp == x)
+#   
+#   prior.cp <- prior[,curve.pars]
+#   prior.cp <- prior.cp[!duplicated(prior.cp),]
+#   
+#   posterior <- post.lst.red[[x]]
+#   post.cp <- posterior[,curve.pars]
+#   
+#   ranks.cp <- sapply(curve.pars, function(cp) {
+#     prior <- prior.cp[1,cp]
+#     post <- post.cp[,cp]
+#     if (cp == 'HL') {
+#       post <- -abs(post)
+#       prior <- -abs(prior)
+#     }
+#     rnk <- length(which(post < prior))/length(post)
+#     return(rnk)
+#   })
+#   
+#   post.seps <- posterior[,grep('s_eps', names(posterior))]
+#   prior.seps <- prior$s_eps
+#   
+#   ranks.seps <- sapply(1:length(unique(prior.seps)), function(i) {
+#     pr <- unique(prior.seps)[i]
+#     post <- post.seps[,i]
+#     rnk <- length(which(post < pr))/length(post)
+#     return(rnk)
+#   })
+#   names(ranks.seps) <- names(post.seps)
+#   
+#   post.sups <- posterior[,grep('s_upsilon', names(posterior))]
+#   prior.sups <- prior$s_upsilon
+#   
+#   ranks.sups <- sapply(1:length(unique(prior.sups)), function(i) {
+#     prior <- unique(prior.sups)[i]
+#     post <- post.sups[,i]
+#     rnk <- length(which(post < prior))/length(post)
+#     return(rnk)
+#   })
+#   names(ranks.sups) <- names(post.sups)
+#   
+#   return(c(ranks.cp, ranks.seps, ranks.sups))
+# })
+# ranks.df <- bind_rows(ranks.lst)
+# write.csv(ranks.df, 'code/output/ranks_reduced.csv')
+# 
+# par(mfrow = c(3, 3)) 
+# for (i in 1:ncol(ranks.df)) {
+#   hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 15)
+# }
+# 
+# 
+# ##### Re-Generate Data #####
+# par.names <- sapply(names(post.lst[[1]]), function(x) {
+#   strsplit(x, split = '[.]')[[1]][1]
+# })
+# upn <- unique(par.names)[2:(length(unique(par.names))-1)]
+# ps.lst <- lapply(1:nrow(post.lst[[1]]), function(r) {
+#   row <- unlist(post.lst[[1]][r,])
+#   lap <- lapply(upn, function(x) {
+#     row[which(par.names == x)]
+#   })
+#   names(lap) <- upn
+#   lap <- append(lap, list(exp(lap$alpha)))
+#   names(lap)[length(lap)] <- 'zeta'
+#   lap$HL <- -lap$HL
+#   return(lap)
+# })
+# 
+# gen.pops2 <- function(N) {
+#   ps <- ps.lst[sample(1:length(ps.lst), N)]
+#   lst <- lapply(1:length(ps), function(i) {
+#     p <- ps.lst[[i]]
+#     pdf <- as.data.frame(p)
+#     pdf$stage <- rep(stages, 7)
+#     pdf$temp <- rep(seq(5, 35, by = 5), each = 5)
+#     t.lst <- lapply(seq(5, 35, by = 5), function(tmp) {
+#       #psub <- subset(pdf, temp == tmp)
+#       pdat <- pop.dev(tmp, pdf)
+#     })
+#     pd <- bind_rows(t.lst)
+#     pd$prior.samp <- i
+#     return(list('priors' = p, 'data' = pd))
+#   })
+#   return(lst)
+# }
+# 
