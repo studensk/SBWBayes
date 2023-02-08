@@ -12,11 +12,12 @@ ptm <- proc.time()
 
 cl <- makeCluster(100)
 clusterEvalQ(cl, {
+  library(tidyverse)
   source('code/data_simulation.R')
 })
-data.lst <- parLapply(1:1000, function(x) {
+data.lst <- parLapply(cl,1:1000, function(x) {
   set.seed(x)
-  gen.pops(1)
+  gen.pops(1)[[1]]
 })
 stopCluster(cl)
 
@@ -176,7 +177,7 @@ sv.lst <- lapply(samps, function(x) {
 })
 
 ## Set up data for model input
-cl1 <- makeCluster(120)
+cl1 <- makeCluster(100)
 clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
 clusterEvalQ(cl1,{
   library(tidyverse)
