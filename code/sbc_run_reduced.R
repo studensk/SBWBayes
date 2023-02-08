@@ -7,9 +7,19 @@ library(parallel)
 source('code/data_simulation.R')
 
 ##### Generate and Clean Data #####
-set.seed(123)
+#set.seed(123)
 ptm <- proc.time()
-data.lst <- gen.pops(1000)
+
+cl <- makeCluster(100)
+clusterEvalQ(cl, {
+  source('code/data_simulation.R')
+})
+data.lst <- parLapply(1:1000, function(x) {
+  set.seed(x)
+  gen.pops(1)
+})
+stopCluster(cl)
+
 proc.time() - ptm
 
 priors.lst <- lapply(1:length(data.lst), function(i) {
@@ -166,7 +176,7 @@ sv.lst <- lapply(samps, function(x) {
 })
 
 ## Set up data for model input
-cl1 <- makeCluster(400)
+cl1 <- makeCluster(120)
 clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
 clusterEvalQ(cl1,{
   library(tidyverse)

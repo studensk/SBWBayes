@@ -1,5 +1,4 @@
 source("code/functions.R")
-source('code/test_stan.R')
 
 all.days.df <- read.csv('data/all_days_df.csv')
 nList <- lme4:::namedList
