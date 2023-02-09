@@ -10,7 +10,7 @@ source('code/data_simulation.R')
 #set.seed(123)
 ptm <- proc.time()
 
-cl <- makeCluster(100)
+cl <- makeCluster(50)
 clusterEvalQ(cl, {
   library(tidyverse)
   source('code/data_simulation.R')
@@ -177,7 +177,7 @@ sv.lst <- lapply(samps, function(x) {
 })
 
 ## Set up data for model input
-cl1 <- makeCluster(100)
+cl1 <- makeCluster(50)
 clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
 clusterEvalQ(cl1,{
   library(tidyverse)
@@ -256,7 +256,7 @@ gr.lst1 <- parLapply(cl1, 1:1000, function(i) {
 
 stopCluster(cl1)
 
-diag.lst <- lapply(gr.lst, function(fit) {
+diag.lst <- lapply(gr.lst1, function(fit) {
   stan.array <- as.array(fit)
   Rhat <- max(apply(stan.array, 3, Rhat))
   ESS.bulk <- min(apply(stan.array, 3, ess_bulk))

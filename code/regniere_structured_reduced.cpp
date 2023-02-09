@@ -154,12 +154,18 @@ px[0] = DW * py[0];
       epsm1 = log(time1d(i)/tpred1 + time2d(i)/tpred2);
       epsij = log(time1(i)/tpred1 + time2(i)/tpred2);
       
-      epsm1_std = epsm1/s_eps(stage(i));
-      epsij_std = epsij/s_eps(stage(i));
+      // epsm1_std = epsm1/s_eps(stage(i));
+      // epsij_std = epsij/s_eps(stage(i));
       
       // Calculate log probability
-      Type pnorm_ij = pnorm_log(epsij_std);
-      Type pnorm_m1 = pnorm_log(epsm1_std);
+      // Type pnorm_ij = pnorm_log(epsij_std);
+      // Type pnorm_m1 = pnorm_log(epsm1_std);
+      
+      Type pnorm_ij = log(pnorm(epsm1, Type(0), s_eps(stage(i))));
+      Type pnorm_m1 = log(pnorm(epsij, Type(0), s_eps(stage(i))));
+      
+      // Type pnorm_ij = pnorm_log(epsij, 0, epsij_std);
+      // Type pnorm_m1 = pnorm_log(epsm1, 0, epsm1_std);
       
       Type timesum = time1d(i) + time2d(i);
       if (timesum == 0) {
