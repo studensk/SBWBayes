@@ -45,22 +45,53 @@ Type dnorm1(Type x){
   return Type(1.0/sqrt(2.0*M_PI)) * exp(-Type(.5)*x*x);
 }
 
-// Define Normal cdf (log)
+//Define Normal cdf (log)
 TMB_ATOMIC_VECTOR_FUNCTION(
-  pnorm_log,
+  pnorm_log1,
   1,
   ty[0] = atomic::Rmath::Rf_pnorm5(tx[0],0,1,1,1);
 ,
-Type W  = ty[0];                    
+Type W  = ty[0];
 Type DW = dnorm1(tx[0])/exp(W);
 px[0] = DW * py[0];
 )
   
+//   TMB_ATOMIC_VECTOR_FUNCTION(
+//     pnorm_log1,
+//     1,
+//     ty[0] = atomic::Rmath::Rf_pnorm5(tx[0],0,1,1,1);
+// ,
+// Type fx = dnorm(tx[0], Type(0), Type(1));
+// Type Fx = pnorm(tx[0], Type(0), Type(1));
+// px[0] =  py[0] * fx / Fx ;
+//   )
+  
+ TMB_ATOMIC_VECTOR_FUNCTION(
+   pnorm_log,
+   1,
+   ty[0] = atomic::Rmath::Rf_pnorm5(tx[0],0,tx[1],1,1);
+,                    
+Type value = -ty[0];
+Type fx = dnorm(tx[0], Type(0), tx[1]);
+Type Fx = pnorm(tx[0], Type(0), tx[1]);
+px[0] = py[0] * fx / Fx;
+px[1] = (1 / tx[1]) * (2 - exp(value));
+//px[1] = (1 / tx[1]) * (2 - Fx);
+ )
+  
   template<class Type> 
-  Type pnorm_log(Type x){
+  Type pnorm_log(Type x, Type sigma){
+    CppAD::vector<Type> tx(2);
+    tx[0] = x;
+    tx[1] = sigma;
+    return pnorm_log(tx)[0];
+  }  
+
+  template<class Type> 
+  Type pnorm_log1(Type x){
     CppAD::vector<Type> tx(1);
     tx[0] = x;
-    return pnorm_log(tx)[0];
+    return pnorm_log1(tx)[0];
   }  
   
   // Define cauchy quantile function    
@@ -149,23 +180,22 @@ px[0] = DW * py[0];
       tpred1 *= c_upsilon1;
       tpred2 *= c_upsilon2;
       
-      
       // Calculate and standardize observed values of epsilon
       epsm1 = log(time1d(i)/tpred1 + time2d(i)/tpred2);
       epsij = log(time1(i)/tpred1 + time2(i)/tpred2);
       
       // epsm1_std = epsm1/s_eps(stage(i));
       // epsij_std = epsij/s_eps(stage(i));
+
+      // Type pnorm_ij = pnorm_log1(epsij_std);
+      // Type pnorm_m1 = pnorm_log1(epsm1_std);
+
+      // Type pnorm_ij = log(pnorm(epsm1, Type(0), s_eps(stage(i))));
+      // Type pnorm_m1 = log(pnorm(epsij, Type(0), s_eps(stage(i))));
       
       // Calculate log probability
-      // Type pnorm_ij = pnorm_log(epsij_std);
-      // Type pnorm_m1 = pnorm_log(epsm1_std);
-      
-      Type pnorm_ij = log(pnorm(epsm1, Type(0), s_eps(stage(i))));
-      Type pnorm_m1 = log(pnorm(epsij, Type(0), s_eps(stage(i))));
-      
-      // Type pnorm_ij = pnorm_log(epsij, 0, epsij_std);
-      // Type pnorm_m1 = pnorm_log(epsm1, 0, epsm1_std);
+      Type pnorm_ij = pnorm_log(epsij, s_eps(stage(i)));
+      Type pnorm_m1 = pnorm_log(epsm1, s_eps(stage(i)));
       
       Type timesum = time1d(i) + time2d(i);
       if (timesum == 0) {
@@ -183,22 +213,6 @@ px[0] = DW * py[0];
     
     // Subtract prior probabilities
     if (use_prior == 1) {
-      // jnll -= sum(dnorm(upsilon, Type(0), Type(1), 1));
-      // jnll -= sum(dnorm(alpha, Type(0), Type(1), 1));
-      // 
-      // jnll -= dbeta(phi_rho, Type(4), Type(4), 1);
-      // jnll -= dbeta(psi_rho, Type(4), Type(4), 1);
-      // jnll -= dgamma(y0_rho, Type(5), Type(0.05), 1);
-      // jnll -= dnorm(log(s_alpha), Type(-1.5), Type(0.3), 1);
-      // 
-      // jnll -= sum(dgamma(HL, Type(6), Type(2), 1));
-      // jnll -= sum(dgamma(HA, Type(5), Type(0.2), 1));
-      // jnll -= sum(dgamma(HH, Type(10), Type(3), 1));
-      // jnll -= sum(dnorm(TL, Type(284), Type(2), 1));
-      // jnll -= sum(dnorm(TH, Type(304), Type(2), 1));
-      // 
-      // jnll -= sum(dnorm(log(s_eps), Type(-1.5), Type(0.1), 1));
-      // jnll -= sum(dnorm(log(s_upsilon), Type(-2.5), Type(0.05), 1));
       tdiff = TH - TL;
       jnll -= sum(dnorm(upsilon, Type(0), Type(1), 1));
       jnll -= sum(dnorm(alpha, Type(0), Type(1), 1));
@@ -211,8 +225,8 @@ px[0] = DW * py[0];
       jnll -= dgamma(HL, Type(3.6), Type(2.253), 1);
       jnll -= dgamma(HA, Type(5.4), Type(0.134), 1);
       jnll -= dgamma(HH, Type(7.6), Type(3.12), 1);
+      
       jnll -= dnorm(log(TL), Type(5.64), Type(0.0067), 1);
-      //jnll -= dnorm(TH, Type(306.3), Type(1.4), 1);
       jnll -= dgamma(tdiff, Type(112), Type(0.226), 1);
       
       jnll -= sum(dnorm(log(s_eps), Type(-1.5), Type(0.1), 1));

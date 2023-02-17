@@ -7,7 +7,7 @@ library(parallel)
 source('code/data_simulation.R')
 
 ##### Generate and Clean Data #####
-#set.seed(123)
+set.seed(123)
 ptm <- proc.time()
 
 cl <- makeCluster(50)
@@ -16,12 +16,19 @@ clusterEvalQ(cl, {
   source('code/data_simulation.R')
 })
 data.lst <- parLapply(cl,1:1000, function(x) {
-  set.seed(x)
-  gen.pops(1)[[1]]
+  set.seed(x + 1)
+  gp <- gen.pops(1)[[1]]
+  gp$data$prior.samp <- x
+  return(gp)
 })
 stopCluster(cl)
 
 proc.time() - ptm
+
+# set.seed(123)
+# ptm <- proc.time()
+# data.lst <- gen.pops(100)
+# proc.time() - ptm
 
 priors.lst <- lapply(1:length(data.lst), function(i) {
   x <- data.lst[[i]]
@@ -135,7 +142,11 @@ sv.lst <- lapply(samps, function(x) {
   test.lst <- lapply(1:4, function(chain) {
     ind <- (x-1)*4 + chain
     anyna <- TRUE
+    ind <- 0
     while(anyna) {
+      print(ind)
+      ind <- ind + 1
+      #set.seed(1)
       ps <- prior.samp(1)[[1]]
       dd2 <- with(dd, nList(temp1,time1,temp2,time2,time1d,time2d,stage,
                             nobs=as.integer(nobs)))
@@ -167,18 +178,22 @@ sv.lst <- lapply(samps, function(x) {
       ps$HL <- abs(ps$HL)
       
       gr <- grad_log_prob(mod, unlist(ps[1:(length(ps)-1)]))
+      nms <- names(unlist(ps[1:(length(ps)-1)]))
+      print(nms[which(is.na(gr))])
       #print(gr)
       anyna <- any(is.na(gr))
+      if (ind > 20) {return(NULL)}
     }
     return(ps)
   })
   
   return(test.lst)
 })
+w <- which(sapply(sv.lst, function(x) {min(sapply(x, length))}) > 0)
 
 ## Set up data for model input
-cl1 <- makeCluster(50)
-clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
+cl1 <- makeCluster(48)
+clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst', 'w'))
 clusterEvalQ(cl1,{
   library(tidyverse)
   library(tmbstan)
@@ -196,7 +211,7 @@ clusterEvalQ(cl1,{
   stages <- paste0('L', 2:6)
 })
 
-gr.lst1 <- parLapply(cl1, 1:1000, function(i) {
+gr.lst1 <- parLapply(cl1, w, function(i) {
   
   dd <- subset(all.data, prior.samp == i)
   dd$stagename <- dd$stage
@@ -233,25 +248,11 @@ gr.lst1 <- parLapply(cl1, 1:1000, function(i) {
   })
   ##### Evaluate Gradient #####
   stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                   chains = 4, iter = 1500, warmup = 750,
+                   chains = 4, iter = 1200, warmup = 700,
                    control= list('max_treedepth' = 15, 'adapt_delta' = 0.99))
   post.df <- as.data.frame(stan1)
-  write.csv(post.df, paste0('code/output/post_iter', i, '.csv'))
+  write.csv(post.df, paste0('code/output/post_iter_try', i, '.csv'))
   return(stan1)
-  # stan.array <- as.array(stan1)
-  # post.df <- as.data.frame(stan1)
-  # 
-  # post.df$Rhat <- max(apply(stan.array, 3, Rhat))
-  # post.df$ESS.bulk <- min(apply(stan.array, 3, ess_bulk))
-  # post.df$ESS.tail <- min(apply(stan.array, 3, ess_tail))
-  # 
-  # g.df <- get_sampler_params(stan1, inc_warmup = FALSE)
-  # g.df <- do.call('rbind', g)
-  # post.df$divergent <- g.df[,'divergent__']
-  # 
-  # post.df$iter <- i
-  
-  #return(post.df)
 })
 
 stopCluster(cl1)
@@ -285,20 +286,20 @@ write.csv(diag.df, 'code/output/diagnostics_reduced.csv')
 # })
 # 
 # 
-# curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
+# curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho',
 #                 'HA', 'TL', 'HL', 'TH', 'HH', 's_alpha')
 # priors.df.new <- priors.df
 # priors.df.new$prior.samp <- as.numeric(factor(priors.df.new$prior.samp))
 # ranks.lst <- lapply(w, function(x) {
 #   if (is.null(post.lst.red[[x]])) {return(NULL)}
 #   prior <- subset(priors.df.new, prior.samp == x)
-#   
+# 
 #   prior.cp <- prior[,curve.pars]
 #   prior.cp <- prior.cp[!duplicated(prior.cp),]
-#   
+# 
 #   posterior <- post.lst.red[[x]]
 #   post.cp <- posterior[,curve.pars]
-#   
+# 
 #   ranks.cp <- sapply(curve.pars, function(cp) {
 #     prior <- prior.cp[1,cp]
 #     post <- post.cp[,cp]
@@ -309,10 +310,10 @@ write.csv(diag.df, 'code/output/diagnostics_reduced.csv')
 #     rnk <- length(which(post < prior))/length(post)
 #     return(rnk)
 #   })
-#   
+# 
 #   post.seps <- posterior[,grep('s_eps', names(posterior))]
 #   prior.seps <- prior$s_eps
-#   
+# 
 #   ranks.seps <- sapply(1:length(unique(prior.seps)), function(i) {
 #     pr <- unique(prior.seps)[i]
 #     post <- post.seps[,i]
@@ -320,10 +321,10 @@ write.csv(diag.df, 'code/output/diagnostics_reduced.csv')
 #     return(rnk)
 #   })
 #   names(ranks.seps) <- names(post.seps)
-#   
+# 
 #   post.sups <- posterior[,grep('s_upsilon', names(posterior))]
 #   prior.sups <- prior$s_upsilon
-#   
+# 
 #   ranks.sups <- sapply(1:length(unique(prior.sups)), function(i) {
 #     prior <- unique(prior.sups)[i]
 #     post <- post.sups[,i]
@@ -331,19 +332,19 @@ write.csv(diag.df, 'code/output/diagnostics_reduced.csv')
 #     return(rnk)
 #   })
 #   names(ranks.sups) <- names(post.sups)
-#   
+# 
 #   return(c(ranks.cp, ranks.seps, ranks.sups))
 # })
 # ranks.df <- bind_rows(ranks.lst)
+# coverage <- apply(ranks.df, 2, function(x) {length(which(x > 0.05 & x < 0.95))/length(x)})
 # write.csv(ranks.df, 'code/output/ranks_reduced.csv')
 # 
-# par(mfrow = c(3, 3)) 
+# par(mfrow = c(3, 3))
 # for (i in 1:ncol(ranks.df)) {
-#   hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 15)
+#   hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 5)
 # }
-# 
-# 
-# ##### Re-Generate Data #####
+
+##### Re-Generate Data #####
 # par.names <- sapply(names(post.lst[[1]]), function(x) {
 #   strsplit(x, split = '[.]')[[1]][1]
 # })
