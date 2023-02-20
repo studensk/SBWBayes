@@ -4,31 +4,13 @@ library(TMB)
 library(lme4)
 library(parallel)
 
-source('code/data_simulation.R')
+source('code/data_simulation_onetemp.R')
 
 ##### Generate and Clean Data #####
 set.seed(123)
 ptm <- proc.time()
-
-cl <- makeCluster(50)
-clusterEvalQ(cl, {
-  library(tidyverse)
-  source('code/data_simulation.R')
-})
-data.lst <- parLapply(cl,1:1000, function(x) {
-  set.seed(x + 1)
-  gp <- gen.pops(1)[[1]]
-  gp$data$prior.samp <- x
-  return(gp)
-})
-stopCluster(cl)
-
+data.lst <- gen.pops(20, sz = 250)
 proc.time() - ptm
-
-# set.seed(123)
-# ptm <- proc.time()
-# data.lst <- gen.pops(100)
-# proc.time() - ptm
 
 priors.lst <- lapply(1:length(data.lst), function(i) {
   x <- data.lst[[i]]
@@ -40,74 +22,21 @@ priors.df <- bind_rows(lapply(priors.lst, as.data.frame))
 priors.df$stage <- rep(stages, length(priors.lst))
 
 all.data <- bind_rows(lapply(data.lst, function(x) {x[[2]]}))
-names(all.data) <- c('temp1', 'temp2', 'stage', 'time1', 'time2', 'nobs', 'cup', 'prior.samp')
+names(all.data) <- c('temp1', 'stage', 'time1', 'nobs', 'cup', 'prior.samp')
 #all.data$block <- all.data$temp1/5
 all.data$block <- paste(all.data$stage, all.data$temp1, sep = '_')
 lev.ord <- paste(rep(stages, each = 7), rep(seq(5, 35, by = 5), 5), sep = '_')
 all.data$block <- factor(all.data$block)
 all.data$block <- factor(all.data$block, levels = lev.ord)
 all.data$ind <- paste(all.data$cup, all.data$temp1, all.data$prior.samp, sep = '_')
-w1 <- which(all.data$temp1 %in% c(15, 20, 25) & all.data$time2 == 0)
-all.data$time2[w1] <- 1
 w2 <- which(all.data$temp1 %in% c(5, 10, 30, 35) & all.data$time1 == 0)
 all.data$time1[w2] <- 1
 
-#all.data$time2d <- pmax(0, all.data$time2 - 1)
-tdiff.lst <- lapply(unique(all.data$ind), function(u) {
-  dat <- subset(all.data, ind == u)
-  dat$time1d <- dat$time1
-  dat$time2d <- dat$time2
-  for (i in 1:5) {
-    row <- dat[i,]
-    if (i == 1) {
-      if (row$time2 == 0) {
-        row$time1d <- row$time1 - 1
-        row$time2d <- row$time2
-      }
-      else {
-        row$time2d <- row$time2 - 1
-        row$time1d <- row$time1
-      }
-    }
-    else {
-      if (dat$time2[i-1] > 0) {
-        #time2d <- time2 - 1
-        if (row$time2 == 0) {
-          row$time1d <- pmax(row$time1 - 1, 0)
-          row$time2d <- 0
-          row$time2 <- 1
-        }
-        else {
-          row$time2d <- row$time2 - 1
-          row$time2 <- row$time2 + 1 
-          row$time1d <- row$time1
-        }
-      }
-      else if (dat$time2[i-1] == 0) {
-        row$time1 <- row$time1 + 1
-        row$time1d <- row$time1 - 1
-        if (row$time2 == 0) {
-          row$time2d <- 0
-          row$time1d <- pmax(row$time1d - 1, 0)
-        }
-        else {
-          row$time2d <- row$time2 - 1
-        }
-      }
-    }
-    dat[i,] <- row
-  }
-  return(dat)
-})
-all.data <- bind_rows(tdiff.lst)
-all.data <- aggregate(data = all.data, nobs ~ temp1 + temp2 + stage + 
-                        time1 + time2 + time1d + time2d + prior.samp + block,
-                      sum)
+#all.data <- subset(all.data, time1 <= 60)
 
-all.data <- subset(all.data, time2 <= 60)
+write.csv(all.data, 'data/sim_data_onetemp.csv', row.names = FALSE)
+write.csv(priors.df, 'data/sim_priors_onetemp.csv', row.names = FALSE)
 
-write.csv(all.data, 'data/sim_data_reduced.csv')
-write.csv(priors.df, 'data/sim_priors_reduced.csv')
 
 ##### Run Model #####
 
@@ -127,7 +56,7 @@ parms <- list(
 
 samps <- unique(all.data$prior.samp)
 
-basename <- "regniere_structured_reduced"
+basename <- "regniere_structured_onetemp"
 basename_loc <- paste0('code/', basename)
 cc <- compile(paste0(basename_loc, '.cpp'))
 try(dyn.unload(dynlib(basename_loc)),silent=TRUE)
@@ -142,16 +71,11 @@ sv.lst <- lapply(samps, function(x) {
   test.lst <- lapply(1:4, function(chain) {
     ind <- (x-1)*4 + chain
     anyna <- TRUE
-    ind <- 0
     while(anyna) {
-      print(ind)
-      ind <- ind + 1
-      set.seed(1)
       ps <- prior.samp(1)[[1]]
-      dd2 <- with(dd, nList(temp1,time1,temp2,time2,time1d,time2d,stage,
+      dd2 <- with(dd, nList(temp1,time1,stage,
                             nobs=as.integer(nobs)))
       dd2$t_block1 <- dd2$stage*7 + dd2$temp1/5 - 1
-      dd2$t_block2 <- dd2$stage*7 + dd2$temp2/5 - 1
       dd2$use_prior <- 1
       
       nblock <- length(unique(dd2$stage))*length(unique(dd2$temp1))
@@ -178,22 +102,18 @@ sv.lst <- lapply(samps, function(x) {
       ps$HL <- abs(ps$HL)
       
       gr <- grad_log_prob(mod, unlist(ps[1:(length(ps)-1)]))
-      nms <- names(unlist(ps[1:(length(ps)-1)]))
-      print(nms[which(is.na(gr))])
       #print(gr)
       anyna <- any(is.na(gr))
-      if (ind > 20) {return(NULL)}
     }
     return(ps)
   })
   
   return(test.lst)
 })
-w <- which(sapply(sv.lst, function(x) {min(sapply(x, length))}) > 0)
 
 ## Set up data for model input
-cl1 <- makeCluster(48)
-clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst', 'w'))
+cl1 <- makeCluster(40)
+clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
 clusterEvalQ(cl1,{
   library(tidyverse)
   library(tmbstan)
@@ -201,7 +121,7 @@ clusterEvalQ(cl1,{
   library(lme4)
   library(rstan)
   
-  basename <- "regniere_structured_reduced"
+  basename <- "regniere_structured_onetemp"
   basename_loc <- paste0('code/', basename)
   cc <- compile(paste0(basename_loc, '.cpp'))
   try(dyn.unload(dynlib(basename_loc)),silent=TRUE)
@@ -211,16 +131,15 @@ clusterEvalQ(cl1,{
   stages <- paste0('L', 2:6)
 })
 
-gr.lst1 <- parLapply(cl1, w, function(i) {
+gr.lst1 <- parLapply(cl1, 1:20, function(i) {
   
   dd <- subset(all.data, prior.samp == i)
   dd$stagename <- dd$stage
   dd$stage <- as.numeric(factor(dd$stage)) - 1
   
-  dd2 <- with(dd, nList(temp1,time1,temp2,time2,time1d,time2d,stage,
+  dd2 <- with(dd, nList(temp1,time1,stage,
                         nobs=as.integer(nobs)))
   dd2$t_block1 <- dd2$stage*7 + dd2$temp1/5 - 1
-  dd2$t_block2 <- dd2$stage*7 + dd2$temp2/5 - 1
   dd2$use_prior <- 1
   
   nblock <- length(unique(dd2$stage))*length(unique(dd2$temp1))
@@ -248,13 +167,11 @@ gr.lst1 <- parLapply(cl1, w, function(i) {
   })
   ##### Evaluate Gradient #####
   stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                   chains = 4, iter = 1200, warmup = 700,
-                   control= list('max_treedepth' = 15, 'adapt_delta' = 0.99))
+                   chains = 4, iter = 500, warmup = 350)
   post.df <- as.data.frame(stan1)
-  write.csv(post.df, paste0('code/output/post_iter_try', i, '.csv'))
+  write.csv(post.df, paste0('code/output/post_iter_onetemp_uc', i, '.csv'))
   return(stan1)
 })
-
 stopCluster(cl1)
 
 diag.lst <- lapply(gr.lst1, function(fit) {
@@ -272,34 +189,26 @@ diag.lst <- lapply(gr.lst1, function(fit) {
               'divergences' = div))
 })
 diag.df <- bind_rows(diag.lst)
-write.csv(diag.df, 'code/output/diagnostics_reduced.csv')
 
 post.lst <- lapply(gr.lst1, as.data.frame)
-rows <- sapply(post.lst, nrow)
-w <- which(rows > 0)
-post.lst.red <- lapply(post.lst, function(x) {
-  if (nrow(x) > 0) {
-    rows <- sample(1:nrow(x), 100)
-    return(x[rows,])
-  }
-  else {return(NULL)}
-})
+post.lst.red <- post.lst
+# post.lst.red <- lapply(post.lst, function(x) {
+#   rows <- sample(1:nrow(x), 100)
+#   return(x[rows,])
+# })
 
 
-curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho',
+curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
                 'HA', 'TL', 'HL', 'TH', 'HH', 's_alpha')
-priors.df.new <- priors.df
-priors.df.new$prior.samp <- as.numeric(factor(priors.df.new$prior.samp))
-ranks.lst <- lapply(w, function(x) {
-  if (is.null(post.lst.red[[x]])) {return(NULL)}
-  prior <- subset(priors.df.new, prior.samp == x)
-
+ranks.lst <- lapply(1:20, function(x) {
+  prior <- subset(priors.df, prior.samp == x)
+  
   prior.cp <- prior[,curve.pars]
   prior.cp <- prior.cp[!duplicated(prior.cp),]
-
+  
   posterior <- post.lst.red[[x]]
   post.cp <- posterior[,curve.pars]
-
+  
   ranks.cp <- sapply(curve.pars, function(cp) {
     prior <- prior.cp[1,cp]
     post <- post.cp[,cp]
@@ -310,21 +219,21 @@ ranks.lst <- lapply(w, function(x) {
     rnk <- length(which(post < prior))/length(post)
     return(rnk)
   })
-
+  
   post.seps <- posterior[,grep('s_eps', names(posterior))]
   prior.seps <- prior$s_eps
-
+  
   ranks.seps <- sapply(1:length(unique(prior.seps)), function(i) {
-    pr <- unique(prior.seps)[i]
+    prior <- unique(prior.seps)[i]
     post <- post.seps[,i]
-    rnk <- length(which(post < pr))/length(post)
+    rnk <- length(which(post < prior))/length(post)
     return(rnk)
   })
   names(ranks.seps) <- names(post.seps)
-
+  
   post.sups <- posterior[,grep('s_upsilon', names(posterior))]
   prior.sups <- prior$s_upsilon
-
+  
   ranks.sups <- sapply(1:length(unique(prior.sups)), function(i) {
     prior <- unique(prior.sups)[i]
     post <- post.sups[,i]
@@ -332,50 +241,12 @@ ranks.lst <- lapply(w, function(x) {
     return(rnk)
   })
   names(ranks.sups) <- names(post.sups)
-
+  
   return(c(ranks.cp, ranks.seps, ranks.sups))
 })
 ranks.df <- bind_rows(ranks.lst)
-coverage <- apply(ranks.df, 2, function(x) {length(which(x > 0.05 & x < 0.95))/length(x)})
-write.csv(ranks.df, 'code/output/ranks_reduced.csv')
-# 
-# par(mfrow = c(3, 3))
-# for (i in 1:ncol(ranks.df)) {
-#   hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 5)
-# }
 
-##### Re-Generate Data #####
-# par.names <- sapply(names(post.lst[[1]]), function(x) {
-#   strsplit(x, split = '[.]')[[1]][1]
-# })
-# upn <- unique(par.names)[2:(length(unique(par.names))-1)]
-# ps.lst <- lapply(1:nrow(post.lst[[1]]), function(r) {
-#   row <- unlist(post.lst[[1]][r,])
-#   lap <- lapply(upn, function(x) {
-#     row[which(par.names == x)]
-#   })
-#   names(lap) <- upn
-#   lap <- append(lap, list(exp(lap$alpha)))
-#   names(lap)[length(lap)] <- 'zeta'
-#   lap$HL <- -lap$HL
-#   return(lap)
-# })
-# 
-# gen.pops2 <- function(N) {
-#   ps <- ps.lst[sample(1:length(ps.lst), N)]
-#   lst <- lapply(1:length(ps), function(i) {
-#     p <- ps.lst[[i]]
-#     pdf <- as.data.frame(p)
-#     pdf$stage <- rep(stages, 7)
-#     pdf$temp <- rep(seq(5, 35, by = 5), each = 5)
-#     t.lst <- lapply(seq(5, 35, by = 5), function(tmp) {
-#       #psub <- subset(pdf, temp == tmp)
-#       pdat <- pop.dev(tmp, pdf)
-#     })
-#     pd <- bind_rows(t.lst)
-#     pd$prior.samp <- i
-#     return(list('priors' = p, 'data' = pd))
-#   })
-#   return(lst)
-# }
-# 
+par(mfrow = c(3, 3)) 
+for (i in 1:ncol(ranks.df)) {
+  hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 10)
+}
