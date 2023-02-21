@@ -23,8 +23,6 @@ data.lst <- parLapply(cl,1:1000, function(x) {
 })
 stopCluster(cl)
 
-proc.time() - ptm
-
 # set.seed(123)
 # ptm <- proc.time()
 # data.lst <- gen.pops(100)
@@ -52,59 +50,25 @@ all.data$time2[w1] <- 1
 w2 <- which(all.data$temp1 %in% c(5, 10, 30, 35) & all.data$time1 == 0)
 all.data$time1[w2] <- 1
 
-#all.data$time2d <- pmax(0, all.data$time2 - 1)
-tdiff.lst <- lapply(unique(all.data$ind), function(u) {
-  dat <- subset(all.data, ind == u)
-  dat$time1d <- dat$time1
-  dat$time2d <- dat$time2
-  for (i in 1:5) {
-    row <- dat[i,]
-    if (i == 1) {
-      if (row$time2 == 0) {
-        row$time1d <- row$time1 - 1
-        row$time2d <- row$time2
-      }
-      else {
-        row$time2d <- row$time2 - 1
-        row$time1d <- row$time1
-      }
-    }
-    else {
-      if (dat$time2[i-1] > 0) {
-        #time2d <- time2 - 1
-        if (row$time2 == 0) {
-          row$time1d <- pmax(row$time1 - 1, 0)
-          row$time2d <- 0
-          row$time2 <- 1
-        }
-        else {
-          row$time2d <- row$time2 - 1
-          row$time2 <- row$time2 + 1 
-          row$time1d <- row$time1
-        }
-      }
-      else if (dat$time2[i-1] == 0) {
-        row$time1 <- row$time1 + 1
-        row$time1d <- row$time1 - 1
-        if (row$time2 == 0) {
-          row$time2d <- 0
-          row$time1d <- pmax(row$time1d - 1, 0)
-        }
-        else {
-          row$time2d <- row$time2 - 1
-        }
-      }
-    }
-    dat[i,] <- row
-  }
-  return(dat)
-})
-all.data <- bind_rows(tdiff.lst)
+all.data$time1.orig <- all.data$time1
+all.data$time2.orig <- all.data$time2
+
+all.data$l2 <- sapply(all.data$stage, function(x) {ifelse(x == 'L2', 1, 0)})
+all.data$cur0 <- sapply(all.data$time2.orig, function(x) {ifelse(x == 0, 1, 0)})
+all.data$prev0 <- c(0, all.data$cur0[1:(nrow(all.data) - 1)])
+
+all.data$time1 <- all.data$time1.orig + (1-all.data$l2)*all.data$prev0
+all.data$time2 <- all.data$time2.orig + (1-all.data$l2)*(1-all.data$prev0)
+all.data$time1d <- all.data$time1.orig - (1-all.data$l2)*all.data$prev0
+all.data$time2d <- all.data$time2.orig - (1 - all.data$cur0)
+all.data.orig <- all.data
+
 all.data <- aggregate(data = all.data, nobs ~ temp1 + temp2 + stage + 
                         time1 + time2 + time1d + time2d + prior.samp + block,
                       sum)
 
 all.data <- subset(all.data, time2 <= 60)
+proc.time() - ptm
 
 write.csv(all.data, 'data/sim_data_reduced.csv')
 write.csv(priors.df, 'data/sim_priors_reduced.csv')

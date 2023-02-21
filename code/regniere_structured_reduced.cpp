@@ -66,17 +66,18 @@ px[0] = DW * py[0];
 // px[0] =  py[0] * fx / Fx ;
 //   )
   
- TMB_ATOMIC_VECTOR_FUNCTION(
+ TMB_ATOMIC_STATIC_FUNCTION(
    pnorm_log,
-   1,
+   2,
    ty[0] = atomic::Rmath::Rf_pnorm5(tx[0],0,tx[1],1,1);
 ,                    
-Type value = -ty[0];
-Type fx = dnorm(tx[0], Type(0), tx[1]);
-Type Fx = pnorm(tx[0], Type(0), tx[1]);
-px[0] = py[0] * fx / Fx;
-px[1] = (1 / tx[1]) * (2 - exp(value));
-//px[1] = (1 / tx[1]) * (2 - Fx);
+Type value = ty[0];
+Type s = tx[1];
+Type input = tx[0];
+Type fx = dnorm(input, Type(0), s);
+Type Fx = pnorm(input, Type(0), s);
+px[0] = fx / (Fx * py[0]);
+px[1] = (1 / s) * (2/Fx - 1);
  )
   
   template<class Type> 
