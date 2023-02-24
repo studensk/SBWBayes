@@ -59,7 +59,7 @@ all.data$prev0 <- c(0, all.data$cur0[1:(nrow(all.data) - 1)])
 
 all.data$time1 <- all.data$time1.orig + (1-all.data$l2)*all.data$prev0
 all.data$time2 <- all.data$time2.orig + (1-all.data$l2)*(1-all.data$prev0)
-all.data$time1d <- all.data$time1.orig - (1-all.data$l2)*all.data$prev0
+all.data$time1d <- all.data$time1.orig - all.data$cur0
 all.data$time2d <- all.data$time2.orig - (1 - all.data$cur0)
 all.data.orig <- all.data
 
@@ -153,11 +153,10 @@ sv.lst <- lapply(samps, function(x) {
   
   return(test.lst)
 })
-w <- which(sapply(sv.lst, function(x) {min(sapply(x, length))}) > 0)
 
 ## Set up data for model input
-cl1 <- makeCluster(48)
-clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst', 'w'))
+cl1 <- makeCluster(40)
+clusterExport(cl1, c('all.data', 'parms', 'prior.samp', 'sv.lst'))
 clusterEvalQ(cl1,{
   library(tidyverse)
   library(tmbstan)
@@ -175,7 +174,7 @@ clusterEvalQ(cl1,{
   stages <- paste0('L', 2:6)
 })
 
-gr.lst1 <- parLapply(cl1, w, function(i) {
+gr.lst1 <- parLapply(cl1, 1:1000, function(i) {
   
   dd <- subset(all.data, prior.samp == i)
   dd$stagename <- dd$stage
@@ -212,10 +211,10 @@ gr.lst1 <- parLapply(cl1, w, function(i) {
   })
   ##### Evaluate Gradient #####
   stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                   chains = 4, iter = 1200, warmup = 700,
+                   chains = 4, iter = 1250, warmup = 750,
                    control= list('max_treedepth' = 15, 'adapt_delta' = 0.99))
   post.df <- as.data.frame(stan1)
-  write.csv(post.df, paste0('code/output/post_iter_try', i, '.csv'))
+  write.csv(post.df, paste0('code/output/post_iter', i, '.csv'))
   return(stan1)
 })
 

@@ -66,27 +66,27 @@ px[0] = DW * py[0];
 // px[0] =  py[0] * fx / Fx ;
 //   )
   
- TMB_ATOMIC_STATIC_FUNCTION(
-   pnorm_log,
-   2,
-   ty[0] = atomic::Rmath::Rf_pnorm5(tx[0],0,tx[1],1,1);
-,                    
-Type value = ty[0];
-Type s = tx[1];
-Type input = tx[0];
-Type fx = dnorm(input, Type(0), s);
-Type Fx = pnorm(input, Type(0), s);
-px[0] = fx / (Fx * py[0]);
-px[1] = (1 / s) * (2/Fx - 1);
- )
+//  TMB_ATOMIC_STATIC_FUNCTION(
+//    pnorm_log,
+//    2,
+//    ty[0] = atomic::Rmath::Rf_pnorm5(tx[0],0,tx[1],1,1);
+// ,                    
+// Type value = ty[0];
+// Type s = tx[1];
+// Type input = tx[0];
+// Type fx = dnorm(input, Type(0), s);
+// Type Fx = pnorm(input, Type(0), s);
+// px[0] = (fx / Fx) * py[0];
+// px[1] = (1 / s) * (2*Fx - 1) * py[0];
+//  )
   
-  template<class Type> 
-  Type pnorm_log(Type x, Type sigma){
-    CppAD::vector<Type> tx(2);
-    tx[0] = x;
-    tx[1] = sigma;
-    return pnorm_log(tx)[0];
-  }  
+  // template<class Type> 
+  // Type pnorm_log(Type x, Type sigma){
+  //   CppAD::vector<Type> tx(2);
+  //   tx[0] = x;
+  //   tx[1] = sigma;
+  //   return pnorm_log(tx)[0];
+  // }  
 
   template<class Type> 
   Type pnorm_log1(Type x){
@@ -185,18 +185,18 @@ px[1] = (1 / s) * (2/Fx - 1);
       epsm1 = log(time1d(i)/tpred1 + time2d(i)/tpred2);
       epsij = log(time1(i)/tpred1 + time2(i)/tpred2);
       
-      // epsm1_std = epsm1/s_eps(stage(i));
-      // epsij_std = epsij/s_eps(stage(i));
+      epsm1_std = epsm1/s_eps(stage(i));
+      epsij_std = epsij/s_eps(stage(i));
 
-      // Type pnorm_ij = pnorm_log1(epsij_std);
-      // Type pnorm_m1 = pnorm_log1(epsm1_std);
+      Type pnorm_ij = pnorm_log1(epsij_std);
+      Type pnorm_m1 = pnorm_log1(epsm1_std);
 
       // Type pnorm_ij = log(pnorm(epsm1, Type(0), s_eps(stage(i))));
       // Type pnorm_m1 = log(pnorm(epsij, Type(0), s_eps(stage(i))));
       
       // Calculate log probability
-      Type pnorm_ij = pnorm_log(epsij, s_eps(stage(i)));
-      Type pnorm_m1 = pnorm_log(epsm1, s_eps(stage(i)));
+      // Type pnorm_ij = pnorm_log(epsij, s_eps(stage(i)));
+      // Type pnorm_m1 = pnorm_log(epsm1, s_eps(stage(i)));
       
       Type timesum = time1d(i) + time2d(i);
       if (timesum == 0) {
