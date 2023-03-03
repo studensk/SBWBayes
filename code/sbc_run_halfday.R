@@ -5,7 +5,8 @@ library(lme4)
 library(parallel)
 library(reshape2)
 
-source('code/data_simulation.R')
+source('code/data_simulation_halfday.R')
+source('code/test_stan.R')
 
 ##### Generate and Clean Data #####
 set.seed(123)
@@ -14,7 +15,7 @@ ptm <- proc.time()
 cl <- makeCluster(50)
 clusterEvalQ(cl, {
   library(tidyverse)
-  source('code/data_simulation.R')
+  source('code/data_simulation_halfday.R')
 })
 data.lst <- parLapply(cl,1:1000, function(x) {
   set.seed(x + 1)
@@ -23,11 +24,6 @@ data.lst <- parLapply(cl,1:1000, function(x) {
   return(gp)
 })
 stopCluster(cl)
-
-# set.seed(123)
-# ptm <- proc.time()
-# data.lst <- gen.pops(100)
-# proc.time() - ptm
 
 priors.lst <- lapply(1:length(data.lst), function(i) {
   x <- data.lst[[i]]
@@ -51,28 +47,17 @@ all.data$time2[w1] <- 1
 w2 <- which(all.data$temp1 %in% c(5, 10, 30, 35) & all.data$time1 == 0)
 all.data$time1[w2] <- 1
 
-all.data$time1.orig <- all.data$time1
-all.data$time2.orig <- all.data$time2
-
-all.data$l2 <- sapply(all.data$stage, function(x) {ifelse(x == 'L2', 1, 0)})
-all.data$cur0 <- sapply(all.data$time2.orig, function(x) {ifelse(x == 0, 1, 0)})
-all.data$prev0 <- c(0, all.data$cur0[1:(nrow(all.data) - 1)])
-
-all.data$time1 <- all.data$time1.orig + (1-all.data$l2)*all.data$prev0
-all.data$time2 <- all.data$time2.orig + (1-all.data$l2)*(1-all.data$prev0)
-all.data$time1d <- all.data$time1.orig - all.data$cur0
-all.data$time2d <- all.data$time2.orig - (1 - all.data$cur0)
-all.data.orig <- all.data
+all.data <- subset(all.data, time2 <= 60)
+all.data$time1 <- round(all.data$time1, 1)
+all.data$time2 <- round(all.data$time2, 1)
 
 all.data <- aggregate(data = all.data, nobs ~ temp1 + temp2 + stage + 
-                        time1 + time2 + time1d + time2d + prior.samp + block,
+                        time1 + time2 + prior.samp + block,
                       sum)
 
-all.data <- subset(all.data, time2 <= 60)
-proc.time() - ptm
+write.csv(all.data, 'data/sim_data_halfday.csv', row.names = FALSE)
+write.csv(priors.df, 'data/sim_priors_halfday.csv', row.names = FALSE)
 
-write.csv(all.data, 'data/sim_data_reduced.csv')
-write.csv(priors.df, 'data/sim_priors_reduced.csv')
 
 ##### Run Model #####
 
@@ -92,7 +77,7 @@ parms <- list(
 
 samps <- unique(all.data$prior.samp)
 
-basename <- "regniere_structured_reduced"
+basename <- "regniere_structured_halfday"
 basename_loc <- paste0('code/', basename)
 cc <- compile(paste0(basename_loc, '.cpp'))
 try(dyn.unload(dynlib(basename_loc)),silent=TRUE)
@@ -107,13 +92,9 @@ sv.lst <- lapply(samps, function(x) {
   test.lst <- lapply(1:4, function(chain) {
     ind <- (x-1)*4 + chain
     anyna <- TRUE
-    ind <- 0
     while(anyna) {
-      print(ind)
-      ind <- ind + 1
-      set.seed(1)
       ps <- prior.samp(1)[[1]]
-      dd2 <- with(dd, nList(temp1,time1,temp2,time2,time1d,time2d,stage,
+      dd2 <- with(dd, nList(temp1,time1,temp2,time2,stage,
                             nobs=as.integer(nobs)))
       dd2$t_block1 <- dd2$stage*7 + dd2$temp1/5 - 1
       dd2$t_block2 <- dd2$stage*7 + dd2$temp2/5 - 1
@@ -143,11 +124,8 @@ sv.lst <- lapply(samps, function(x) {
       ps$HL <- abs(ps$HL)
       
       gr <- grad_log_prob(mod, unlist(ps[1:(length(ps)-1)]))
-      nms <- names(unlist(ps[1:(length(ps)-1)]))
-      print(nms[which(is.na(gr))])
       #print(gr)
       anyna <- any(is.na(gr))
-      if (ind > 20) {return(NULL)}
     }
     return(ps)
   })
@@ -165,7 +143,7 @@ clusterEvalQ(cl1,{
   library(lme4)
   library(rstan)
   
-  basename <- "regniere_structured_reduced"
+  basename <- "regniere_structured_halfday"
   basename_loc <- paste0('code/', basename)
   cc <- compile(paste0(basename_loc, '.cpp'))
   try(dyn.unload(dynlib(basename_loc)),silent=TRUE)
@@ -175,13 +153,13 @@ clusterEvalQ(cl1,{
   stages <- paste0('L', 2:6)
 })
 
-gr.lst1 <- parLapply(cl1, 1:1000, function(i) {
+gr.lst1 <- parLapply(cl1, 1:250, function(i) {
   
   dd <- subset(all.data, prior.samp == i)
   dd$stagename <- dd$stage
   dd$stage <- as.numeric(factor(dd$stage)) - 1
   
-  dd2 <- with(dd, nList(temp1,time1,temp2,time2,time1d,time2d,stage,
+  dd2 <- with(dd, nList(temp1,time1,temp2,time2,stage,
                         nobs=as.integer(nobs)))
   dd2$t_block1 <- dd2$stage*7 + dd2$temp1/5 - 1
   dd2$t_block2 <- dd2$stage*7 + dd2$temp2/5 - 1
@@ -212,10 +190,9 @@ gr.lst1 <- parLapply(cl1, 1:1000, function(i) {
   })
   ##### Evaluate Gradient #####
   stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
-                   chains = 4, iter = 1250, warmup = 750,
-                   control= list('max_treedepth' = 15, 'adapt_delta' = 0.99))
+                   chains = 4, iter = 1250, warmup = 750)
   post.df <- as.data.frame(stan1)
-  write.csv(post.df, paste0('code/output/post_iter', i, '.csv'))
+  write.csv(post.df, paste0('code/output/post_iter_halfday', i, '.csv'))
   return(stan1)
 })
 
@@ -236,48 +213,27 @@ diag.lst <- lapply(gr.lst1, function(fit) {
               'divergences' = div))
 })
 diag.df <- bind_rows(diag.lst)
-write.csv(diag.df, 'code/output/diagnostics_reduced.csv')
+write.csv(diag.df, 'code/output/diagnostics_halfday.csv')
 
-rows <- sapply(post.lst, nrow)
-w <- which(rows > 0)
+post.lst <- lapply(gr.lst, as.data.frame)
 post.lst.red <- lapply(post.lst, function(x) {
-  if (nrow(x) > 0) {
-    rows <- sample(1:nrow(x), 100)
-    return(x[rows,])
-  }
-  else {return(NULL)}
+  rows <- sample(1:nrow(x), 100)
+  return(x[rows,])
 })
 
-post.lst <- lapply(1:1000, function(x) {
-  setwd('..')
-  setwd('..')
-  dat <- read.csv(paste0('SBWBayes_Output_March1/output/post_iter', x, '.csv'))
-  setwd('SBWBayes/SBWBayes')
-  return(dat)
-})
 
-post.lst.red <- lapply(post.lst, function(x) {
-  if (nrow(x) > 0) {
-    rows <- sample(1:nrow(x), 200)
-    return(x[rows,])
-  }
-  else {return(NULL)}
-})
-
-curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho',
+curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
                 'HA', 'TL', 'HL', 'TH', 'HH', 's_alpha')
-priors.df.new <- priors.df
-priors.df.new$prior.samp <- as.numeric(factor(priors.df.new$prior.samp))
 ranks.lst <- lapply(w, function(x) {
   if (is.null(post.lst.red[[x]])) {return(NULL)}
   prior <- subset(priors.df.new, prior.samp == x)
-
+  
   prior.cp <- prior[,curve.pars]
   prior.cp <- prior.cp[!duplicated(prior.cp),]
-
+  
   posterior <- post.lst.red[[x]]
   post.cp <- posterior[,curve.pars]
-
+  
   ranks.cp <- sapply(curve.pars, function(cp) {
     prior <- prior.cp[1,cp]
     post <- post.cp[,cp]
@@ -288,10 +244,10 @@ ranks.lst <- lapply(w, function(x) {
     rnk <- length(which(post < prior))/length(post)
     return(rnk)
   })
-
+  
   post.seps <- posterior[,grep('s_eps', names(posterior))]
   prior.seps <- prior$s_eps
-
+  
   ranks.seps <- sapply(1:length(unique(prior.seps)), function(i) {
     pr <- unique(prior.seps)[i]
     post <- post.seps[,i]
@@ -299,10 +255,10 @@ ranks.lst <- lapply(w, function(x) {
     return(rnk)
   })
   names(ranks.seps) <- names(post.seps)
-
+  
   post.sups <- posterior[,grep('s_upsilon', names(posterior))]
   prior.sups <- prior$s_upsilon
-
+  
   ranks.sups <- sapply(1:length(unique(prior.sups)), function(i) {
     prior <- unique(prior.sups)[i]
     post <- post.sups[,i]
@@ -310,148 +266,11 @@ ranks.lst <- lapply(w, function(x) {
     return(rnk)
   })
   names(ranks.sups) <- names(post.sups)
-
+  
   return(c(ranks.cp, ranks.seps, ranks.sups))
 })
 ranks.df <- bind_rows(ranks.lst)
 coverage <- apply(ranks.df, 2, function(x) {length(which(x > 0.05 & x < 0.95))/length(x)})
-write.csv(ranks.df, 'code/output/ranks_reduced.csv')
-
-par(mfrow = c(3, 3))
-for (i in 1:ncol(ranks.df)) {
-  hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 50)
-}
-
-##### SBC on devrates #####
-pr.lst <- lapply(unique(priors.df$prior.samp), function(ps) {
-  sub <- subset(priors.df, prior.samp == ps)
-  st.lst <- lapply(stages, function(x) {
-    sub2 <- subset(sub, stage == x)
-    rw <- sub2[1,1:11]
-    
-    alpha <- sub2$alpha[1]
-    s_alpha <- sub2$s_alpha[1]
-    ind <- which(stages == x)
-    stg.ind <- (ind - 1) - 2
-    
-    sa2 <- -0.5*(s_alpha)^2
-    alpha.mult <- exp(alpha*s_alpha + sa2)
-    
-    a <- (rw$y0_rho/8)*(rw$phi_rho + rw$psi_rho - 2)
-    b <- (rw$y0_rho/4)*(rw$psi_rho - rw$phi_rho)
-    c <- rw$y0_rho
-    rho <- a*stg.ind^2 + b*stg.ind + c
-    rho25 <- rho*alpha.mult
-    
-    ups.orig <- sub2$upsilon
-    names(ups.orig) <- paste0('upsilon.', seq(5, 35, by = 5), '.')
-    p.ups <- pcauchy(log(ups.orig), 0, rw$s_upsilon)
-    ups <- qnorm(p.ups)
-    df <- as.data.frame(c(rw, ups, 'alpha' = alpha, 'rho25' = rho25))
-    df$stage <- x
-    return(df)
-  })
-  st.df <- bind_rows(st.lst)
-  st.df$prior.samp <- ps
-  return(st.df)
-})
-pr.df <- bind_rows(pr.lst)
-
-pr.gc <- get_curves(pr.df, temp = seq(5, 35, by = 5), spline = TRUE)
-pr.gc$stage <- rep(pr.df$stage, each = 7)
-pr.gc$index <- rep(pr.df$prior.samp, each = 7)
-d.pr.gc <- dcast(data = pr.gc, index ~ temp + stage, value.var = 'rate')
-names(d.pr.gc) <- c('index', paste0('rate', names(d.pr.gc)[2:length(d.pr.gc)]))
-write.csv(d.pr.gc, paste0('code/output/devrates/prior_rates.csv'))
-
-rateCluster <- makeCluster(10)
-clusterEvalQ(rateCluster, {
-  library(tidyverse)
-  library(reshape2)
-  source('code/functions.R')
-})
-clusterExport(rateCluster, {
-  c('stages')
-})
-
-rate.lst <- parLapply(rateCluster, 1:1000, function(x) {
-  ptm <- proc.time()
-  setwd('..')
-  setwd('..')
-  post.df <- read.csv(paste0('SBWBayes_Output_March1/output/post_iter', x, '.csv'))
-  setwd('SBWBayes/SBWBayes')
-  post.df <- post.df[,2:length(post.df)-1]
-  
-  p.lst <- lapply(1:5, function(ind) {
-    stg.ind <- (ind - 1) - 2
-    
-    alpha <- post.df[, paste0('alpha.', ind, '.')]
-    sa2 <- -0.5*(post.df$s_alpha)^2
-    alpha.mult <- exp(alpha*post.df$s_alpha + sa2)
-    
-    a <- (post.df$y0_rho/8)*(post.df$phi_rho + post.df$psi_rho - 2)
-    b <- (post.df$y0_rho/4)*(post.df$psi_rho - post.df$phi_rho)
-    c <- post.df$y0_rho
-    rho <- a*stg.ind^2 + b*stg.ind + c
-    rho25 <- rho*alpha.mult 
-    q.pars <- post.df[,c('phi_rho', 'psi_rho', 'y0_rho')]
-    
-    par.cols <- post.df[,c('HA', 'TL', 'HL', 'TH', 'HH') ]
-    sigmas <- post.df[, grep(paste0('.', ind, '.'), names(post.df))[1:2]]
-    pars <- as.data.frame(cbind(q.pars,rho25, 
-                                par.cols, sigmas))
-    names(pars) <- c('phi_rho', 'psi_rho', 'y0_rho', 'rho25', 
-                     'HA', 'TL', 'HL', 'TH', 'HH', 's_eps', 's_upsilon')
-    pars$HL <- -pars$HL
-    pars$TA <- sapply(1:nrow(pars), function(r) {
-      row <- pars[r,]
-      ta <- with(row, ta.fun(HL, HH, TL, TH))
-      return(ta)
-    })
-    
-    upsilons <- post.df[,grep('^upsilon', names(post.df))]
-    inds <- (ind-1)*7 + 1:7
-    ups.ind <- upsilons[,inds]
-    names(ups.ind) <- paste0("upsilon.", seq(5, 35, by = 5), '.')
-    
-    stage.df <- as.data.frame(cbind(pars, ups.ind, 'alpha' = alpha.mult, 
-                                    's_alpha' = post.df$s_alpha))
-    stage.df$stage <- stages[ind]
-    stage.df$index <- 1:nrow(stage.df)
-    return(stage.df)
-  })
-  p.df <- bind_rows(p.lst)
-  
-  gc <- get_curves(p.df, temp = seq(5, 35, by = 5), spline = TRUE)
-  gc$stage <- rep(p.df$stage, each = 7)
-  gc$index <- rep(p.df$index, each = 7)
-  d.gc <- dcast(data = gc, index ~ temp + stage, value.var = 'rate')
-  names(d.gc) <- c('index', paste0('rate', names(d.gc)[2:length(d.gc)]))
-  write.csv(d.gc, paste0('code/output/devrates/ratedf', x, '.csv'))
-  d.gc$over_ind <- x
-  return(d.gc)
-})
-rate.df <- bind_rows(rate.lst)
-
-r.lst <- lapply(1:nrow(d.pr.gc), function(x) {
-  prior <- unlist(d.pr.gc[x,grep('rate', names(d.pr.gc))])
-  post <- read.csv(paste0('code/output/devrates/ratedf', x, '.csv'))
-  post <- post[,grep('rate', names(post))]
-  ranks <- lapply(1:length(prior), function(i) {
-    prr <- prior[i]
-    rank <- length(which(post[,i] < prr))/nrow(post)
-    return(rank)
-  })
-  df <- as.data.frame(ranks)
-  names(df) <- names(prior)
-  return(df)
-})
-r.df <- bind_rows(r.lst)
+write.csv(ranks.df, 'code/output/ranks_halfday.csv')
 
 
-for (s in stages) {
-  par(mfrow = c(3, 3))
-  dat <- r.df[,grep(s, names(r.df))]
-  for (i in 1:ncol(dat))
-  hist(as.data.frame(dat)[,i], main = names(dat)[i], breaks = 50)
-}
