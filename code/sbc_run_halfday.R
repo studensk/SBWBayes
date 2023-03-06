@@ -17,7 +17,7 @@ clusterEvalQ(cl, {
   library(tidyverse)
   source('code/data_simulation_halfday.R')
 })
-data.lst <- parLapply(cl,1:1000, function(x) {
+data.lst <- parLapply(cl,1:250, function(x) {
   set.seed(x + 1)
   gp <- gen.pops(1)[[1]]
   gp$data$prior.samp <- x
@@ -48,8 +48,8 @@ w2 <- which(all.data$temp1 %in% c(5, 10, 30, 35) & all.data$time1 == 0)
 all.data$time1[w2] <- 1
 
 all.data <- subset(all.data, time2 <= 60)
-all.data$time1 <- round(all.data$time1, 1)
-all.data$time2 <- round(all.data$time2, 1)
+# all.data$time1 <- round(all.data$time1, 1)
+# all.data$time2 <- round(all.data$time2, 1)
 
 all.data <- aggregate(data = all.data, nobs ~ temp1 + temp2 + stage + 
                         time1 + time2 + prior.samp + block,
@@ -84,7 +84,7 @@ try(dyn.unload(dynlib(basename_loc)),silent=TRUE)
 dyn.load(dynlib(basename_loc))
 
 sv.lst <- lapply(samps, function(x) {
-  print(x)
+  #print(x)
   dd <- subset(all.data, prior.samp == x)
   dd$stagename <- dd$stage
   dd$stage <- as.numeric(factor(dd$stage)) - 1
@@ -125,7 +125,7 @@ sv.lst <- lapply(samps, function(x) {
       
       gr <- grad_log_prob(mod, unlist(ps[1:(length(ps)-1)]))
       #print(gr)
-      anyna <- any(is.na(gr))
+      anyna <- (any(is.na(gr)) | any(!is.finite(gr)))
     }
     return(ps)
   })
@@ -221,10 +221,9 @@ post.lst.red <- lapply(post.lst, function(x) {
   return(x[rows,])
 })
 
-
 curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
                 'HA', 'TL', 'HL', 'TH', 'HH', 's_alpha')
-ranks.lst <- lapply(w, function(x) {
+ranks.lst <- lapply(1:250, function(x) {
   if (is.null(post.lst.red[[x]])) {return(NULL)}
   prior <- subset(priors.df.new, prior.samp == x)
   
@@ -273,4 +272,8 @@ ranks.df <- bind_rows(ranks.lst)
 coverage <- apply(ranks.df, 2, function(x) {length(which(x > 0.05 & x < 0.95))/length(x)})
 write.csv(ranks.df, 'code/output/ranks_halfday.csv')
 
+par(mfrow = c(3, 3))
+for (i in 1:ncol(ranks.df)) {
+  hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 50)
+}
 
