@@ -36,6 +36,11 @@ all.data$l2stage <- sapply(all.data$stage, function(x) {ifelse(x == 'L2', 1, 0)}
 all.data$time1d <- floor(all.data$time1.orig)
 all.data$time1 <- ceiling(all.data$time1.orig) + (1-all.data$l2stage)
 
+
+all.data <- aggregate(data = all.data, nobs ~ temp1 + stage + 
+                        time1 + time1d + prior.samp + block,
+                      sum)
+
 write.csv(all.data, 'data/sim_data_onetemp.csv', row.names = FALSE)
 write.csv(priors.df, 'data/sim_priors_onetemp.csv', row.names = FALSE)
 

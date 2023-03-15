@@ -81,6 +81,7 @@ Type objective_function<Type>::operator() ()
   DATA_VECTOR(time1d);
   DATA_VECTOR(temp1);
   DATA_INTEGER(use_prior);
+  DATA_IVECTOR(nobs);
   
   PARAMETER(phi_rho);
   PARAMETER(psi_rho);
@@ -109,7 +110,8 @@ Type objective_function<Type>::operator() ()
   //Type lc_upsilon;
   Type c_upsilon1;
   Type tdiff;
-  Type dayprop_prev;
+  Type nlogp;
+  Type pnormdiff;
   
   Type sa2 = -0.5*s_alpha*s_alpha;
   
@@ -142,6 +144,16 @@ Type objective_function<Type>::operator() ()
     
     Type pnorm_ij = pnorm_log1(epsij_std);
     Type pnorm_m1 = pnorm_log1(epsm1_std);
+    if (time1d(i) == 0) {
+      pnormdiff = pnorm_ij;
+    }
+    else {
+      pnormdiff =  logspace_sub(pnorm_ij, pnorm_m1);
+    }
+    
+    // Subtract log prob times number of observations
+    nlogp = nobs(i)*pnormdiff;
+    jnll -= nlogp;
     
   } 
   
