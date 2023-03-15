@@ -22,7 +22,7 @@ priors.df <- bind_rows(lapply(priors.lst, as.data.frame))
 priors.df$stage <- rep(stages, length(priors.lst))
 
 all.data <- bind_rows(lapply(data.lst, function(x) {x[[2]]}))
-names(all.data) <- c('temp1', 'stage', 'time1', 'nobs', 'cup', 'prior.samp')
+names(all.data) <- c('temp1', 'stage', 'time1.orig', 'nobs', 'cup', 'prior.samp')
 #all.data$block <- all.data$temp1/5
 all.data$block <- paste(all.data$stage, all.data$temp1, sep = '_')
 lev.ord <- paste(rep(stages, each = 7), rep(seq(5, 35, by = 5), 5), sep = '_')
@@ -32,7 +32,9 @@ all.data$ind <- paste(all.data$cup, all.data$temp1, all.data$prior.samp, sep = '
 w2 <- which(all.data$temp1 %in% c(5, 10, 30, 35) & all.data$time1 == 0)
 all.data$time1[w2] <- 1
 
-#all.data <- subset(all.data, time1 <= 60)
+all.data$l2stage <- sapply(all.data$stage, function(x) {ifelse(x == 'L2', 1, 0)})
+all.data$time1d <- floor(all.data$time1.orig)
+all.data$time1 <- ceiling(all.data$time1.orig) + (1-all.data$l2stage)
 
 write.csv(all.data, 'data/sim_data_onetemp.csv', row.names = FALSE)
 write.csv(priors.df, 'data/sim_priors_onetemp.csv', row.names = FALSE)
@@ -73,7 +75,7 @@ sv.lst <- lapply(samps, function(x) {
     anyna <- TRUE
     while(anyna) {
       ps <- prior.samp(1)[[1]]
-      dd2 <- with(dd, nList(temp1,time1,stage,
+      dd2 <- with(dd, nList(temp1,time1,time1d,stage,
                             nobs=as.integer(nobs)))
       dd2$t_block1 <- dd2$stage*7 + dd2$temp1/5 - 1
       dd2$use_prior <- 1
@@ -137,7 +139,7 @@ gr.lst1 <- parLapply(cl1, 1:20, function(i) {
   dd$stagename <- dd$stage
   dd$stage <- as.numeric(factor(dd$stage)) - 1
   
-  dd2 <- with(dd, nList(temp1,time1,stage,
+  dd2 <- with(dd, nList(temp1,time1,time1d,stage,
                         nobs=as.integer(nobs)))
   dd2$t_block1 <- dd2$stage*7 + dd2$temp1/5 - 1
   dd2$use_prior <- 1
@@ -169,7 +171,7 @@ gr.lst1 <- parLapply(cl1, 1:20, function(i) {
   stan1 <- tmbstan(ff, init = parm.lst, silent = TRUE, 
                    chains = 4, iter = 500, warmup = 350)
   post.df <- as.data.frame(stan1)
-  write.csv(post.df, paste0('code/output/post_iter_onetemp_uc', i, '.csv'))
+  write.csv(post.df, paste0('code/output/post_iter_onetemp', i, '.csv'))
   return(stan1)
 })
 stopCluster(cl1)
@@ -189,13 +191,10 @@ diag.lst <- lapply(gr.lst1, function(fit) {
               'divergences' = div))
 })
 diag.df <- bind_rows(diag.lst)
+write.csv(diag.df, 'code/output/diagnostics_onetemp.csv')
 
 post.lst <- lapply(gr.lst1, as.data.frame)
 post.lst.red <- post.lst
-# post.lst.red <- lapply(post.lst, function(x) {
-#   rows <- sample(1:nrow(x), 100)
-#   return(x[rows,])
-# })
 
 
 curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
@@ -245,8 +244,7 @@ ranks.lst <- lapply(1:20, function(x) {
   return(c(ranks.cp, ranks.seps, ranks.sups))
 })
 ranks.df <- bind_rows(ranks.lst)
+coverage <- apply(ranks.df, 2, function(x) {length(which(x > 0.05 & x < 0.95))/length(x)})
+write.csv(ranks.df, 'code/output/ranks_onetemp.csv')
 
-par(mfrow = c(3, 3)) 
-for (i in 1:ncol(ranks.df)) {
-  hist(as.data.frame(ranks.df)[,i], main = names(ranks.df)[i], breaks = 10)
-}
+

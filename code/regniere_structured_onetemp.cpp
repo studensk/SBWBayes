@@ -45,6 +45,23 @@ Type dnorm1(Type x){
   return Type(1.0/sqrt(2.0*M_PI)) * exp(-Type(.5)*x*x);
 }
 
+//Define Normal cdf (log)
+TMB_ATOMIC_VECTOR_FUNCTION(
+  pnorm_log1,
+  1,
+  ty[0] = atomic::Rmath::Rf_pnorm5(tx[0],0,1,1,1);
+,
+Type W  = ty[0];
+Type DW = dnorm1(tx[0])/exp(W);
+px[0] = DW * py[0];
+)
+  
+  template<class Type> 
+  Type pnorm_log1(Type x){
+    CppAD::vector<Type> tx(1);
+    tx[0] = x;
+    return pnorm_log1(tx)[0];
+  }  
 
 
 // Define cauchy quantile function    
@@ -61,6 +78,7 @@ Type objective_function<Type>::operator() ()
   DATA_IVECTOR(stage);
   DATA_IVECTOR(t_block1);
   DATA_VECTOR(time1);
+  DATA_VECTOR(time1d);
   DATA_VECTOR(temp1);
   DATA_INTEGER(use_prior);
   
@@ -82,9 +100,11 @@ Type objective_function<Type>::operator() ()
   Type jnll = 0;
   Type tpred1;
   Type epsij;
+  Type epsm1;
   Type rho25;
   Type TA;
   Type epsij_std;
+  Type epsm1_std;
   Type u_upsilon1;
   //Type lc_upsilon;
   Type c_upsilon1;
@@ -114,16 +134,14 @@ Type objective_function<Type>::operator() ()
     tpred1 *= c_upsilon1;
     
     // Calculate and standardize observed values of epsilon
+    epsm1 = log(time1d(i)/tpred1);
     epsij = log(time1(i)/tpred1);
     
+    epsm1_std = epsm1/s_eps(stage(i));
     epsij_std = epsij/s_eps(stage(i));
     
-    // Calculate log probability
-    //Type l_dnorm_ij = dnorm(epsij, Type(0), s_eps(stage(i)), 1);
-    Type l_dnorm_ij = dnorm(epsij_std, Type(0), Type(1), 1);
-    
-    // Subtract log prob times number of observations
-    jnll -= l_dnorm_ij;
+    Type pnorm_ij = pnorm_log1(epsij_std);
+    Type pnorm_m1 = pnorm_log1(epsm1_std);
     
   } 
   

@@ -55,6 +55,7 @@ ind.progress <- function(param.df, dev.df) {
     st <- stages[s]
     rdf <- subset(dev.df, stage == st)
     trt.time <- 1/rdf$r.treatment
+    #rdf$time.treatment <- ceiling(trt.time)
     rdf$time.treatment <- trt.time
     dev.lst <- append(dev.lst, list(rdf))
   }
