@@ -9,7 +9,7 @@ source('code/data_simulation_onetemp.R')
 ##### Generate and Clean Data #####
 set.seed(123)
 ptm <- proc.time()
-data.lst <- gen.pops(20, sz = 250)
+data.lst <- gen.pops(250, sz = 250)
 proc.time() - ptm
 
 priors.lst <- lapply(1:length(data.lst), function(i) {
@@ -133,7 +133,7 @@ clusterEvalQ(cl1,{
   stages <- paste0('L', 2:6)
 })
 
-gr.lst1 <- parLapply(cl1, 1:20, function(i) {
+gr.lst1 <- parLapply(cl1, 1:250, function(i) {
   
   dd <- subset(all.data, prior.samp == i)
   dd$stagename <- dd$stage
