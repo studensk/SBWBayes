@@ -127,8 +127,11 @@ Type objective_function<Type>::operator() ()
     tpred1 = calc_pred(temp1(i), rho25, HA, TL, -HL, TH, HH, TA);
     
     // Quantile match Lognormal (previously Cauchy)
-    u_upsilon1 = pnorm(upsilon(t_block1(i)), Type(0), Type(1));
-    c_upsilon1 = exp(qcauchy(u_upsilon1, Type(0), s_upsilon(stage(i))));
+    // u_upsilon1 = pnorm(upsilon(t_block1(i)), Type(0), Type(1));
+    // c_upsilon1 = exp(qcauchy(u_upsilon1, Type(0), s_upsilon(stage(i))));
+    
+    u_upsilon1 = upsilon(t_block1(i));
+    c_upsilon1 = exp(u_upsilon1*Type(s_upsilon(stage(i))));
     
     // Transform for bias reduction
     tpred1 *= c_upsilon1;
@@ -142,6 +145,18 @@ Type objective_function<Type>::operator() ()
     
     Type pnorm_ij = pnorm_log1(epsij_std);
     Type pnorm_m1 = pnorm_log1(epsm1_std);
+    
+    Type timesum = time1d(i) + time2d(i);
+    if (timesum == 0) {
+      pnormdiff = pnorm_ij;
+    }
+    else {
+      pnormdiff =  logspace_sub(pnorm_ij, pnorm_m1);
+    }
+    
+    // Subtract log prob times number of observations
+    nlogp = nobs(i)*pnormdiff;
+    jnll -= nlogp;
     
   } 
   

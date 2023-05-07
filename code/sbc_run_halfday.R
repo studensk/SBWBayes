@@ -217,10 +217,16 @@ write.csv(diag.df, 'code/output/diagnostics_halfday.csv')
 
 post.lst <- lapply(gr.lst, as.data.frame)
 post.lst.red <- lapply(post.lst, function(x) {
-  rows <- sample(1:nrow(x), 100)
-  return(x[rows,])
+  if (is.null(x)) {return(NULL)}
+  else {
+    rows <- sample(1:nrow(x), 100)
+    return(x[rows,])
+  }
+  
 })
 
+priors.df.new <- priors.df
+priors.df.new$prior.samp <- as.numeric(factor(priors.df.new$prior.samp))
 curve.pars <- c('phi_rho', 'psi_rho', 'y0_rho', 
                 'HA', 'TL', 'HL', 'TH', 'HH', 's_alpha')
 ranks.lst <- lapply(1:250, function(x) {
