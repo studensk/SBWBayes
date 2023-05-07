@@ -41,7 +41,7 @@ prior.samp <- function(chains) {
       'TH' = th,
       'HH' = rgamma(1, 7.6, scale = 3.12),
       's_eps' = exp(rnorm(5, -1.5, 0.1)),
-      's_upsilon' = exp(rnorm(5, -0.5, 0.5)),
+      's_upsilon' = exp(rnorm(5, -2.5, 0.05)),
       's_alpha' = exp(rnorm(1, -1.5, 0.3)),
       'alpha' = 0.05
     )
