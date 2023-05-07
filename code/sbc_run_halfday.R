@@ -215,7 +215,7 @@ diag.lst <- lapply(gr.lst1, function(fit) {
 diag.df <- bind_rows(diag.lst)
 write.csv(diag.df, 'code/output/diagnostics_halfday.csv')
 
-post.lst <- lapply(gr.lst, as.data.frame)
+post.lst <- lapply(gr.lst1, as.data.frame)
 post.lst.red <- lapply(post.lst, function(x) {
   if (is.null(x)) {return(NULL)}
   else {
