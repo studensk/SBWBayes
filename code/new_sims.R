@@ -3,7 +3,6 @@ library(imputeTS)
 library(smooth)
 all.days.df <- read.csv('data/all_days_df.csv')
 source('code/functions.R')
-source('code/test_stan.R')
 
 ## Import weather data
 rename <- plyr::rename
@@ -31,8 +30,9 @@ stages <- c('L2', 'L3', 'L4', 'L5', 'L6')
 prov <- 'ON'
 
 ## Import results of stage-structured model runs
-struc.df <- read.csv('data/model_results.csv')
-struc.df$index <- rep(1:(nrow(struc.df)/5), 5)
+struc.df <- read.csv('data/noss_model_results.csv')
+struc.df$index <- rep(1:(nrow(struc.df)/5), each = 5)
+struc.df$HL <- -abs(struc.df$HL)
 
 ##### Simulations #####
 
@@ -40,16 +40,16 @@ struc.df$index <- rep(1:(nrow(struc.df)/5), 5)
 ##   weather inputs
 pop.dev <- function(temps, param.df, size = 100, all.dev = FALSE) {
   temps.unique <- sort(unique(temps))
-  dev.lst <- lapply(stages, function(stage) {
+  dev.lst <- lapply(stages, function(st) {
     all.temps <- seq(0, 40, by = 0.1)
-    params <- param.df[which(stages == stage),]
-    times <- with(params, calc_pred3(all.temps, rho25, HA, TL, HL, TH, HH, TA))
-    rates <- 1/times
+    params <- subset(param.df, stage == st)
+    pdf.full$rho25 <- pdf.full$rho
+    rates <- get_curves(pdf.full, temp = all.temps, spline = TRUE)$rate
     s.df <- data.frame(all.temps, rates)
     names(s.df) <- c('temp', 'rate')
     
     rates <- approx(s.df$temp, s.df$rate, xout = pmax(temps.unique, 0))$y
-    df <- data.frame('temps' = temps.unique, rates, stage)
+    df <- data.frame('temps' = temps.unique, rates, 'stage' = st)
     return(df)
   })
   dev.df <- bind_rows(dev.lst)
@@ -57,7 +57,7 @@ pop.dev <- function(temps, param.df, size = 100, all.dev = FALSE) {
     hours <- vector()
     eps <- rnorm(5, 0, param.df$s_eps)
     deltas <- exp(eps)
-    if (ind == 1) {deltas <- rep(1, 5)}
+    #if (ind == 1) {deltas <- rep(1, 5)}
     names(deltas) <- stages
     dev <- 0
     i <- 1
@@ -116,8 +116,9 @@ sim.multi <- function(param.lst, temps, size = 100, all.dev = FALSE) {
 }
 
 ## Simulate 1000 individuals from 1000 posterior draws
-ssd <- sim.multi(lapply(sample(unique(struc.df$index), 1000), function(x) {
-  subset(struc.df, index == x)}), temps.on, size = 1000, all.dev = TRUE)
+struc.lst <- lapply(unique(struc.df$index), function(x) {
+  subset(struc.df, index == x)})
+ssd <- sim.multi(struc.lst, temps.on, size = 100, all.dev = TRUE)
 
 ssd$group <- mapply(function(i1, i2) {paste0(i1, '_', i2)}, 
                     ssd$index, ssd$individual)
@@ -143,12 +144,12 @@ q.lst <- lapply(unique(ssd$date), function(d) {
 q.df <- bind_rows(q.lst)
 pred.int <- q.df
 
-write.csv(pred.int, 'data/ribbon_df.csv', row.names = FALSE)
+write.csv(pred.int, 'data/noss_ribbon_df.csv', row.names = FALSE)
 
-gc.lst <- lapply(stages, function(stg) {
-  sub <- subset(struc.df, stage == stg)
-  gc <- get_curves(sub)
-  gc$stage <- stg
+gc.lst <- lapply(unique(struc.df$index), function(ind) {
+  sub <- subset(struc.df, index == ind)
+  gc <- get_curves(sub, spline = TRUE)
+  gc$stage <- sapply(gc$index, function(x) {stages[x]})
   return(gc)
 })
 gc.df <- bind_rows(gc.lst)
@@ -168,19 +169,6 @@ names(ag.gc.df)[3:length(ag.gc.df)] <-
 write.csv(ag.gc.df, 'data/dev_curves.csv', row.names = FALSE)
 
 ## Obtain splines from posterior draws
-struc.spl.lst <- lapply(stages, function(st) {
-  sub <- subset(struc.df, stage == st)
-  eps <- sub$s_eps
-  q1 <- qlnorm(0.01, mean = 0, sd = eps)
-  q99 <- qlnorm(0.99, mean = 0, sd = eps)
-  sp <- get_curves(sub, temp = tempvec)
-  sp$q1 <- sp$rate*q1
-  sp$q99 <- sp$rate*q99
-  sp$stage <- st
-  return(sp)
-})
-struc.spl <- bind_rows(struc.spl.lst)
-rm(struc.spl.lst)
 
 ssd$stage <- sapply(ssd$dev, function(d) {
   ind <- floor(d) + 1
@@ -195,7 +183,7 @@ tables <- lapply(unique(ssd$date), function(d) {table(subset(ssd, date == d)$sta
 count.df <- bind_rows(tables)
 count.mat <- apply(count.df, 1, function(x) {x/sum(x)})
 count.df <- as.data.frame(t(count.mat))
-ag.ss <- aggregate(data = struc.spl, rate ~ temp + stage, median)
+ag.ss <- aggregate(data = gc.df, rate ~ temp + stage, median)
 dates <- sort(unique(ssd$date))
 lst <- lapply(1:length(dates), function(d) {
   prop <- as.numeric(count.df[d,])

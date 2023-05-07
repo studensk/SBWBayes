@@ -1,5 +1,7 @@
 library(dclone)
 library(splines)
+library(tidyverse)
+library(car)
 count <- dplyr::count
 
 ## Functions for imputing observed dev rates at lethal temps
@@ -104,6 +106,7 @@ quadratic <- function(stage, phi, psi, y0) {
 
 ## Obtain either parametric curves or bias-reduced splines from parameter vectors
 get_curves <- function(data, temp = tempvec, spline = FALSE) {
+  if ('rho' %in% names(data)) {data$rho25 <- data$rho}
   lst <- lapply(1:nrow(data), function(r) {
     row <- data[r,]
     ta <- with(row, ta.fun(HL, HH, TL, TH))
@@ -185,5 +188,28 @@ prov.factor <- function(data, name = 'province') {
   return(data)
 }
 
+scale.est <- function(x) {IQR(x)/1.349}
+
+powertrans <- function(y, lambda = NULL) {
+  if (is.null(lambda)) {lambda <- powerTransform(y)$lambda}
+  if (lambda == 0) {
+    return(log(y))
+  }
+  else {
+    return((y^lambda - 1)/lambda)
+  }
+}
+
+qmatch <- function(prior, post) {
+  l.prior <- log(prior)
+  mu.pr <- mean(l.prior)
+  sig.pr <- sd(l.prior)
+  mu.pt <- median(post)
+  sig.pt <- scale.est(post)
+  
+  z <- (post - mu.pt)/sig.pt
+  x <- z*sig.pr + mu.pr
+  return(exp(x))
+}
 
 
